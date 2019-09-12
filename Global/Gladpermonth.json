@@ -1,0 +1,409 @@
+{
+        "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+        "width": 200,
+        "height": 250,
+        "background":"white",
+        "padding": 5,
+         "signals": [
+    {
+      "name": "language",
+      "value": "en",
+      "bind": {
+        "input": "hidden",
+        "name":" ",
+        "options": [
+          "fr",
+          "ka",
+          "es",
+          "en",
+          "pt",
+          "zh",
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "ylabel",
+      "value": "Years",
+      "update": "if(language=='en','Number of Alerts', if(language=='fr','Nombre d’alertes',if(language=='es','Número de alertas',if(language=='pt','Número de alertas',if(language=='ka','Number of Alerts',if(language=='zh','预警次数','Jumlah Peringatan'))))))"
+    },
+    {
+      "name": "xlabel",
+      "value": "Month",
+      "update": "if(language=='en','Month', if(language=='fr','Mois',if(language=='es','Meses',if(language=='pt','Meses',if(language=='ka','თვეები',if(language=='zh','月份','Bulan'))))))"
+    }
+  ],
+        "data": [
+          {
+            "name": "data",
+            "format": {
+              "property": "data.attributes.value"
+            },
+            "url": "https://production-api.globalforestwatch.org/v1/glad-alerts?period=2015-01-01,2019-12-31&aggregate_values=true&aggregate_by=month",
+            "transform": [
+              {
+                "type": "formula",
+                "as": "month",
+                "expr": "datum.month - 1"
+              },
+              {
+                "type": "impute",
+                "groupby": [
+                  "year"
+                ],
+                "keyvals": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9,
+                  10,
+                  11
+                ],
+                "key": "month",
+                "field": "count",
+                "method": "value",
+                "value": 0
+              },
+              {
+                "type": "collect",
+                "sort": {
+                  "field": [
+                    "year",
+                    "month"
+                  ]
+                }
+              },
+              {
+                "type": "formula",
+                "as": "date",
+                "expr": "datetime(datum.year, datum.month)"
+              },
+              {
+                "type": "filter",
+                "expr": "datum.date < datetime(2019, 7)"
+              }
+            ]
+          },
+           {
+            "name": "months",
+            "values": [
+              {
+                "month":0,
+                "en": "Jan",
+                "fr": "Janv.",
+                "pt": "Jan.",
+                "es": "Ene.",
+                "ka": "იან.",
+                "zh": "一月",
+                "id": "Jan."
+              },
+              {
+                "month":1,
+                "en": "Feb",
+                "fr": "Fév.",
+                "pt": "Fev.",
+                "es": "Feb.",
+                "ka": "თებ.",
+                "zh": "二月",
+                "id": "Feb."
+              },
+              {
+                "month":2,
+                "en": "Mar",
+                "fr": "Mars",
+                "pt": "Mar.",
+                "es": "Mar.",
+                "ka": "მარ.",
+                "zh": "三月",
+                "id": "Mar."
+              },
+              {
+                "month":3,
+                "en": "Apr",
+                "fr": "Avril",
+                "pt": "Abr.",
+                "es": "Abr.",
+                "ka": "აპრ.",
+                "zh": "四月",
+                "id": "Apr."
+              },
+              {
+                "month":4,
+                "en": "May",
+                "fr": "Mai",
+                "pt": "Mai",
+                "es": "Mayo",
+                "ka": "მაის.",
+                "zh": "五月",
+                "id": "Mei"
+              },
+              {
+                "month":5,
+                "en": "Jun",
+                "fr": "Juin",
+                "pt": "Jun.",
+                "es": "Jun.",
+                "ka": "ივნ.",
+                "zh": "六月",
+                "id": "Jun"
+              },
+              {
+                "month":6,
+                "en": "Jul",
+                "fr": "Juil.",
+                "pt": "Jul.",
+                "es": "Jul.",
+                "ka": "ივლ.",
+                "zh": "七月",
+                "id": "Jul"
+              },
+              {
+                "month":7,
+                "en": "Aug",
+                "fr": "Août",
+                "pt": "Ago.",
+                "es": "Ago.",
+                "ka": "აგვ.",
+                "zh": "八月",
+                "id": "Agu."
+              },
+              {
+                "month":8,
+                "en": "Sep",
+                "fr": "Sept.",
+                "pt": "Set.",
+                "es": "Sept.",
+                "ka": "სექ.",
+                "zh": "九月",
+                "id": "Sep."
+              },
+               {
+                "month":9,
+                "en": "Oct",
+                "fr": "Oct.",
+                "pt": "Out.",
+                "es": "Oct.",
+                "ka": "ოქტ.",
+                "zh": "十月",
+                "id": "Okt."
+              },
+              {
+                "month":10,
+                "en": "Nov",
+                "fr": "Nov.",
+                "pt": "Nov.",
+                "es": "Nov.",
+                "ka": "ნოე.",
+                "zh": "十一月",
+                "id": "Nov."
+              },
+              {
+                "month":11,
+                "en": "Dec",
+                "fr": "Déc.",
+                "pt": "Dez.",
+                "es": "Dic.",
+                "ka": "დეკ.",
+                "zh": "十二月",
+                "id": "Des."
+              }
+            ]
+          },
+          {
+            "name": "lookup",
+            "values": [
+              {
+                "hex": "#d8d8d8",
+                "year": "2015"
+              },
+              {
+                "hex": "#aaaaaa",
+                "year": "2016"
+              },
+              {
+                "hex": "#8A8A8A",
+                "year": "2017"
+              },
+              {
+                "hex": "#fc92f7",
+                "year": "2018"
+              },
+              {
+                "hex": "#ed07e1",
+                "year": "2019"
+              }
+            ]
+          },
+          {
+            "name": "table_viz",
+            "source": "data",
+            "transform": [
+              {
+                "type": "lookup",
+                "from": "lookup",
+                "key": "year",
+                "fields": [
+                  "year"
+                ],
+                "values": [
+                  "hex"
+                ]
+              },
+              {
+                "type": "lookup",
+                "from": "months",
+                "key": "month",
+                "fields": [
+                  "month"
+                ],
+                "values": [
+                  {"signal":"language"}
+                ],
+                "as":["month_name"]
+              }
+            ]
+          }
+        ],
+        "scales": [
+          {
+            "name": "x",
+            "type": "point",
+            "padding": 0.3,
+            "range": "width",
+            "domain": {
+              "data": "table_viz",
+              "field": "month_name"
+            }
+          },
+          {
+            "name": "y",
+            "type": "linear",
+            "range": "height",
+            "domain": {
+              "data": "data",
+              "field": "count"
+            }
+          },
+          {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+              "data": "table_viz",
+              "field": "year"
+            },
+            "range": {
+              "data": "table_viz",
+              "field": "hex"
+            }}
+        ],
+        "axes": [
+          {
+            "title": {"signal":"xlabel"},
+            "orient": "bottom",
+            "scale": "x",
+            "labelBound": true,
+            "labelAngle": -90,
+            "labelAlign": "right",
+            "labelBaseline":"middle"
+          },
+          {
+            "title": {"signal":"ylabel"},
+            "orient": "left",
+            "scale": "y",
+            "format": ",.0f"
+          }
+        ],
+        "marks": [
+          {
+            "type": "group",
+            "from": {
+              "facet": {
+                "name": "series",
+                "data": "table_viz",
+                "groupby": "year"
+              }
+            },
+            "marks": [
+              {
+                "type": "line",
+                "from": {
+                  "data": "series"
+                },
+                "encode": {
+                  "enter": {
+                    "x": {
+                      "scale": "x",
+                      "field": "month_name"
+                    },
+                    "y": {
+                      "scale": "y",
+                      "field": "count"
+                    },
+                    "strokeWidth": {
+                      "value": 0.6
+                    },
+                    "interpolate": {
+                      "value": "linear"
+                    },
+                    "strokeOpacity": {
+                      "value": 1
+                    },
+                    "stroke": {
+                      "scale": "color",
+                      "field": "year"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "symbol",
+                "from": {
+                  "data": "table_viz"
+                },
+                "encode": {
+                  "enter": {
+                    "x": {
+                      "scale": "x",
+                      "field": "month_name"
+                    },
+                    "y": {
+                      "scale": "y",
+                      "field": "count"
+                    },
+                    "fill": {
+                      "scale": "color",
+                      "field": "year"
+                    },
+                    "size": {
+                      "value": 13
+                    },
+                    "tooltip": [
+{
+                        "signal": "if(language=='en',datum.count + ' alerts in ' + datum.month_name + ' ' + datum.year, if(language=='fr',datum.count + ' alertes en ' + datum.month_name + ' ' + datum.year,if(language=='es',datum.count + ' Alertas en ' + datum.month_name + ' ' + datum.year,if(language=='pt',datum.count + ' Alertas em ' + datum.month_name + ' ' + datum.year,if(language=='ka',datum.count + ' შეტყობინებები შემოსული ' + datum.month_name + ' ' + datum.year,if(language=='zh',datum.count + ' 提醒 ' + datum.month_name + ' ' + datum.year, datum.count + ' Lansiran di ' + datum.month_name + ' ' + datum.year))))))"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "legends": [
+          {
+            "fill": "color",
+            "orient": "bottom",
+            "columns":3,
+            "columnPadding": 25,
+            "direction": "horizontal",
+            "titleFontSize": 11,
+            "labelFontSize": 10,
+            "symbolOpacity": 0.6
+          }
+        ]
+      }
