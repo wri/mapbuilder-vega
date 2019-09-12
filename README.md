@@ -70,8 +70,8 @@ The tables below list the global MapBuilder widgets which are included in the Gl
 
 ## Carbon Emissions
 
-| -----------     ||
 | Widget Name     ||
+| -----------     ||
 | Description     ||
 | DatasetID       ||
 | WidgetID        ||
@@ -80,10 +80,6 @@ The tables below list the global MapBuilder widgets which are included in the Gl
 | Parameters to Pass||
 | Analysis Endpoint ||
 
-| Widget Name | Description| DatasetID   | WidgetID   | API Widget Link | VEGA Analysis Url| Parameters to Pass | Analysis Endpoint |
-| ----------- | -----------| ----------- | -----------| --------------- | -----------------| -------------------| ----------------- |
-| Carbon-Emissions.json | Calculate Emissions from Tree Cover Loss |a97036a8-5526-4b85-8ffb-9ee2cdd9b34a | 95c2c559-ca78-4b7a-b18b-7b2bca14ce83
-| Fires_Analysis.json  | Text       |
 
 
 
