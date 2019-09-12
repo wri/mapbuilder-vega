@@ -68,6 +68,34 @@ The tables below list the global MapBuilder widgets which are included in the Gl
 7) A list of parameters which must be passed from MapBuilder to the VEGA.
 8) A working call to the analysis endpoint in the Resource Watch API, in which the necessary parameters have been added to the call.
 
+#### Aggregated Annual Tree Cover Loss
+
+This widget is used by MapBuilder to display results for aggregated tree cover loss and gain call. It requries that MapBuilder pass a tcd treshold, period, and geostore to the Vega Widget which will be apended to the Vega url analysis call.
+
+| Widget Name     |totallossgain.json|
+| -----------     |---|
+| Description     |This widget is used to calculate aggregated tree cover loss|
+| DatasetID       |a97036a8-5526-4b85-8ffb-9ee2cdd9b34a|
+| WidgetID        |95c2c559-ca78-4b7a-b18b-7b2bca14ce83|
+| API Widget Link |https://production-api.globalforestwatch.org/v1/dataset/a97036a8-5526-4b85-8ffb-9ee2cdd9b34a/widget/95c2c559-ca78-4b7a-b18b-7b2bca14ce833|
+| VEGA Analysis Url|https://production-api.globalforestwatch.org/v1/umd-loss-gain?|
+| Parameters to Pass|period,tresh,geostore|
+| Analysis Endpoint |https://production-api.globalforestwatch.org/v1/umd-loss-gain?period=2001-01-01,2018-12-31&geostore=502aa120e1b3cf334a8312e232275a52&thresh=30|
+
+#### Disagregated Annual Tree Cover Loss
+
+This widget is used by MapBuilder to display results for tree cover loss analysis disaggregated by year. It requries that MapBuilder pass a tcd treshold, period, and geostore to the Vega Widget which will be apended to the Vega url analysis call.
+
+| Widget Name     |annualtclloss.json|
+| -----------     |---|
+| Description     |This widget is used to calculate annual tree cover loss disaggregated by year|
+| DatasetID       |a97036a8-5526-4b85-8ffb-9ee2cdd9b34a|
+| WidgetID        |e53e541c-92cd-4b00-9aa7-2c7bb36d4697|
+| API Widget Link |https://production-api.globalforestwatch.org/v1/dataset/a97036a8-5526-4b85-8ffb-9ee2cdd9b34a/widget/e53e541c-92cd-4b00-9aa7-2c7bb36d4697|
+| VEGA Analysis Url|https://production-api.globalforestwatch.org/v1/umd-loss-gain?aggregate_values=false&table=true|
+| Parameters to Pass|period,tresh,geostore|
+| Analysis Endpoint |https://production-api.globalforestwatch.org/v1/umd-loss-gain?aggregate_values=false&table=true&period=2001-01-01,2018-12-31&geostore=eafd61c47ccfc34c39a390783fcbd302&thresh=30|
+
 #### Carbon Emissions from Biomass Loss
 
 This widget is used by MapBuilder to display results of the biomass loss analysis. It requries that MapBuilder pass a tcd treshold, period, and geostore to the Vega Widget which will be apended to the Vega url analysis call.
@@ -81,6 +109,7 @@ This widget is used by MapBuilder to display results of the biomass loss analysi
 | VEGA Analysis Url|https://production-api.globalforestwatch.org/v2/biomass-loss?table=true|
 | Parameters to Pass|period,tresh,geostore|
 | Analysis Endpoint |https://production-api.globalforestwatch.org/v2/biomass-loss?table=true&period=2001-01-01,2018-12-31&geostore=18fe450d0cfd37754d61416e9113a9bd&thresh=30|
+
 
 
 
