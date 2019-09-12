@@ -55,6 +55,8 @@ curl -X PATCH https://api.resourcewatch.org/v1/dataset/a97036a8-5526-4b85-8ffb-9
 
 For more information on interacting with the Resource Watch API please reference: https://resource-watch.github.io/doc-api/index-rw.html#create-a-widget
 
+## Existing MapBuilder widgets
+
 For documentation on the existing widgets in this repository please refernece the mapbuilder-vega github wiki. https://github.com/wri/mapbuilder-vega/wiki/Global-MapBuilder-Widgets
 
 
