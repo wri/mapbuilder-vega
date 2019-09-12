@@ -1,0 +1,123 @@
+{
+    "schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "height": 250,
+    "width": 180,
+    "padding": 5,
+    "background":"white",
+    "signals": [
+    {
+      "name": "language",
+      "value": "en",
+      "bind": {
+        "input": "hidden",
+        "name":" ",
+        "options": [
+          "fr",
+          "ka",
+          "es",
+          "en",
+          "pt",
+          "zh",
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "ylabel",
+      "value": "Gross carbon emissions (t CO2)",
+      "update":"if(language=='en','Gross carbon emissions (t CO2)', if(language=='fr','Émissions brutes de carbone (en tonnes de CO2)',if(language=='es','Emisiones de carbono brutas (t CO2)',if(language=='pt','Emissões de carbono brutas (CO₂ t)',if(language=='ka','ნახშირის საერთო ემისია (ტ CO2)',if(language=='zh','总碳排放量 (t吨 二氧化碳 CO2)','Emisi karbon kotor (t CO2)'))))))"
+    },
+    {
+      "name": "xlabel",
+      "value": "Year",
+      "update": "if(language=='en','Year', if(language=='fr','Année',if(language=='es','Año',if(language=='pt','Ano',if(language=='ka','წელი',if(language=='zh','年','Tahun'))))))"
+    }
+  ],
+    "data": [
+        {
+            "name": "table",
+            "format": {
+                "property": "data.attributes"
+            },
+            "url": "https://production-api.globalforestwatch.org/v2/biomass-loss?table=true"
+        }],
+    "scales": [
+        {
+            "name": "x",
+            "type": "band",
+            "range": "width",
+            "domain": {
+                "data": "table",
+                "field": "year"
+            },
+            "padding": 0.3
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "range": "height",
+            "nice": true,
+            "zero": true,
+            "domain": {
+                "data": "table",
+                "field": "co2LossByYear"
+            }
+        }
+    ],
+    "axes": [
+        {
+      "title": {
+        "signal": "xlabel"
+      },
+            "orient": "bottom",
+            "scale": "x",
+            "labelBound": true,
+            "labelAngle": -90,
+            "labelAlign": "right",
+            "labelBaseline":"middle"
+        },
+        {
+                 "title": {
+        "signal": "ylabel"
+      },
+            "orient": "left",
+            "scale": "y",
+            "tickCount": 5,
+            "format": ",.0f"
+        }
+    ],
+    "marks": [
+      {
+            "type": "rect",
+            "from": {
+                "data": "table"
+            },
+            "encode": {
+                "enter": {
+                    "x": {
+                        "scale": "x",
+                        "field": "year"
+                    },
+                    "width": {
+                        "scale": "x",
+                        "band": 1
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "co2LossByYear"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "value": 0
+                    },
+                    "fill": {
+                        "value": "#b3b3ff"
+                    },
+                    "tooltip": {
+                        "signal": "format(datum.co2LossByYear,',.0f') + ' t CO2 in ' + datum.year"
+                    }
+                }
+            }
+        }
+    ]
+}
