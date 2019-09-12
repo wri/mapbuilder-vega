@@ -1,0 +1,218 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v4.json",
+    "height": 240,
+    "width": 240,
+    "padding": 5,
+     "signals": [
+    {
+      "name": "language",
+      "value": "en",
+      "bind": {
+        "input": "hidden",
+        "name":" ",
+        "options": [
+          "fr",
+          "ka",
+          "es",
+          "en",
+          "pt",
+          "zh",
+          "id"
+        ]
+      }
+    },
+    {"name":"legend",
+    "value":"Land Cover Composition",
+    "update":"if(language=='en','Land Cover Composition', if(language=='fr','Composition de la couverture terrestre',if(language=='es','Composición de la cobertura de tierra',if(language=='pt','Composição da cobertura de terra',if(language=='ka','მიწის საფარის შემადგენლობა',if(language=='zh','土地覆盖构成','Komposisi Tutupan Lahan'))))))"}
+  ],
+    "data": [
+        {
+            "name": "table",
+            "format": {
+                "property": "data.attributes.landcover"
+            },
+            "url": "https://production-api.globalforestwatch.org/v1/landcover?",
+            "transform": [
+            {
+  "type": "collect",
+  "sort": {"field": "result",
+  "order":"ascending"}
+}]
+        },        {
+            "name": "lookup",
+            "values": [
+                {
+                    "classVal": "1",
+                    "hex": "#D2A965",
+                    "en":"Agriculture",
+                    "fr":"Agriculture",
+                    "es":"Agricultura",
+                    "pt":"Agricultura",
+                    "id":"Agricultura",
+                    "ka":"სოფლის მეურნეობა",
+                    "zh":"农业"
+                },
+                {
+                    "classVal": "2",
+                    "hex": "#157764",
+                    "en":"Forest",
+                    "fr":"Forêt",
+                    "es":"Bosque",
+                    "pt":"Floresta",
+                    "id":"Hutan",
+                    "ka":"ტყე",
+                    "zh":"森林"
+                },
+                {
+                    "classVal": "3",
+                    "hex": "#CCDB98",
+                    "en":"Grassland",
+                    "fr":"Prairies",
+                    "es":"Pastizal",
+                    "pt":"Campo",
+                    "id":"Padang Rumput",
+                    "ka":"მინდორი",
+                    "zh":"草地"
+                },
+                {
+                    "classVal": "4",
+                    "hex": "#489BDB",
+                    "en":"Wetland",
+                    "fr":"Terres humides",
+                    "es":"Humedal",
+                    "pt":"Pantanal",
+                    "id":"Lahan Basah",
+                    "ka":"ჭარბტენიანი ტერიტორია",
+                    "zh":"湿地"
+                },
+                {
+                    "classVal": "5",
+                    "hex": "#E9462B",
+                    "en":"Settlement",
+                    "fr":"Propriété terrienne",
+                    "es":"Establecimiento",
+                    "pt":"Assentamento",
+                    "id":"Pemukiman",
+                    "ka":"დასახლებული პუნქტი",
+                    "zh":"垦殖地"
+                },
+                {
+                    "classVal": "6",
+                    "hex": "#596B2C",
+                    "en":"Shrubland",
+                    "fr":"Arbustaies",
+                    "es":"Matorral",
+                    "pt":"Vegetação arbustivo",
+                    "id":"Semak Belukar",
+                    "ka":"ბუჩქნარი",
+                    "zh":"灌木"
+                },
+                {
+                    "classVal": "7",
+                    "hex": "#D5C998",
+                    "en":"Sparse vegetation",
+                    "fr":"Végétation clairsemée",
+                    "es":"Vegetación escasa",
+                    "pt":"Vegetação esparsa",
+                    "id":"Vegetasi Jarang",
+                    "ka":"იშვიათი მცენარეულობა",
+                    "zh":"稀疏植被"
+                },
+                {
+                    "classVal": "8",
+                    "hex": "#F6F0EA",
+                    "en":"Bare",
+                    "fr":"Nu",
+                    "es":"Sin vegetación",
+                    "pt":"Solo exposto",
+                    "id":"Terbuka",
+                     "ka":"მოშიშვლებული",
+                     "zh":"裸地"
+                },
+                {
+                    "classVal": "9",
+                    "hex": "#B5E3FF",
+                    "en":"Water",
+                    "fr":"Eau",
+                    "es":"Aqua",
+                    "pt":"Água",
+                    "id":"Air",
+                    "ka":"წყალი",
+                    "zh":"水域"
+                },
+                {
+                    "classVal": "10",
+                    "hex": "#FFFFFF",
+                    "en":"Permanent snow and ice",
+                    "fr":"Neige et glace permanentes",
+                    "es":"Hielo y nieve permanentes",
+                    "pt":"Neve e gelo permanentes",
+                    "id":"Salju dan es permanen",
+                    "ka":"მუდმივი თოვლი და ყინული"
+                }
+            ]
+        },  {"name":"table_viz",
+        "source":"table",
+        "transform":[
+                                                    {
+          "type": "pie",
+          "field": "result",
+          "startAngle": 0,
+          "endAngle": 6.29,
+          "sort": true},
+          {"type":"lookup",
+            "from":"lookup",
+            "key":"classVal",
+            "fields": ["classVal"],
+            "values": [
+                        "hex","en","fr","es","id","pt","ka","zh"
+                    ]
+            },{
+                    "type": "filter",
+                    "expr": "datum.endAngle - datum.startAngle > 0.01"
+                }]}
+
+    ],
+     "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "table_viz", "field": {"signal": "language"}},
+      "range": {"data": "table_viz", "field": "hex"}
+    }
+  ],
+  "marks": [
+    {
+      "type": "arc",
+      "from": {"data": "table_viz"},
+      "encode": {
+        "enter": {
+          "fill": {"scale": "color", "field": {"signal": "language"}},
+          "x": { "signal":"width / 2"},
+          "stroke": {"value": "white"},
+          "strokewidth": {"value": 0.5},
+          "y": { "signal":"height / 2"},
+          "startAngle": {"field": "startAngle"},
+          "endAngle": {"field": "endAngle"},
+          "outerRadius":{ "signal":"height / 2"},
+          "tooltip": {"signal": "if(language=='en',datum.en + ' : ' + format(datum.result, ',.0f') + ' ha',if(language=='fr',datum.fr + ' : ' + format(datum.result, ',.0f') + ' ha',if(language=='es',datum.es + ' : ' + format(datum.result, ',.0f') + ' ha',if(language=='pt',datum.pt + ' : ' + format(datum.result, ',.0f') + ' ha',if(language=='ka',datum.ka + ' : ' + format(datum.result, ',.0f') + ' ha',if(language=='id',datum.id + ' : ' + format(datum.result, ',.0f') + ' ha',datum.zh + ' : ' + format(datum.result, ',.0f') + ' ha'))))))"}},
+          "hover": {"fillOpacity": {"value": 0.7}
+          },
+          "update": {"fillOpacity": {"value": 1}
+          }
+      }}],
+            "legends": [
+        {
+          "title": { "signal":"legend"},
+            "titleBaseline":"top",
+            "fill": "color",
+            "orient": "bottom",
+            "columns":2,
+            "columnPadding": 30,
+            "direction": "vertical",
+            "titleFontSize": 9.5,
+            "titleFontStyle":"normal",
+            "labelFontSize": 9.5
+        }
+    ]
+}
