@@ -1,0 +1,348 @@
+{
+  "schema": "https://vega.github.io/schema/vega/v3.0.json",
+  "width": 250,
+  "height": 150,
+  "padding": 5,
+  "autosize":"fit",
+  "background": "white",
+  "signals": [
+    {
+      "name": "language",
+      "value": "en",
+      "bind": {
+        "input": "hidden",
+        "name":" ",
+        "options": [
+          "fr",
+          "ka",
+          "es",
+          "en",
+          "pt",
+          "zh",
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "glad",
+      "value": "Glad Alerts",
+      "update":"if(language=='en','GLAD Alerts', if(language=='fr','Alertes GLAD',if(language=='es','Alertas GLAD ',if(language=='pt','Alertas GLAD',if(language=='ka','GLAD შეტყობინებები',if(language=='zh','GLAD 预警','Peringatan GLAD'))))))"
+    }],
+  "data": [
+    {
+      "name": "data",
+      "format": {
+        "property": "data"
+      },
+      "url": "https://production-api.globalforestwatch.org/v1/glad-alerts?aggregate_values=true&aggregate_by=day"
+},
+{
+"name":"table",
+            "values": [
+                {
+                    "type": "GLAD Alert"
+                }
+            ],
+      "transform": [
+                {
+                    "type": "formula",
+                    "as": "value",
+                    "expr": "data('data')[0]['attributes']['value']"
+                },
+                {
+                    "type": "formula",
+                    "as": "period",
+                    "expr": "data('data')[0]['period']"
+                },
+                {
+                  "type":"formula",
+                  "as":"startdate",
+                  "expr":"datetime(substring(datum.period,0,10))"
+                  },
+                  {
+                  "type":"formula",
+                  "as":"enddate",
+                  "expr":"datetime(substring(datum.period,11,21))"
+                  },
+                        {
+        "type": "formula",
+        "as": "maxmonth",
+        "expr": "utcmonth(datum.enddate)"
+      },
+                              {
+        "type": "formula",
+        "as": "minmonth",
+        "expr": "utcmonth(datum.startdate)"
+      }
+      ]
+
+                },
+    {
+            "name": "months",
+            "values": [
+              {
+                "month":0,
+                "en": "Jan",
+                "fr": "Janv.",
+                "pt": "Jan.",
+                "es": "Ene.",
+                "ka": "იან.",
+                "zh": "一月",
+                "id": "Jan."
+              },
+              {
+                "month":1,
+                "en": "Feb",
+                "fr": "Fév.",
+                "pt": "Fev.",
+                "es": "Feb.",
+                "ka": "თებ.",
+                "zh": "二月",
+                "id": "Feb."
+              },
+              {
+                "month":2,
+                "en": "Mar",
+                "fr": "Mars",
+                "pt": "Mar.",
+                "es": "Mar.",
+                "ka": "მარ.",
+                "zh": "三月",
+                "id": "Mar."
+              },
+              {
+                "month":3,
+                "en": "Apr",
+                "fr": "Avril",
+                "pt": "Abr.",
+                "es": "Abr.",
+                "ka": "აპრ.",
+                "zh": "四月",
+                "id": "Apr."
+              },
+              {
+                "month":4,
+                "en": "May",
+                "fr": "Mai",
+                "pt": "Mai",
+                "es": "Mayo",
+                "ka": "მაის.",
+                "zh": "五月",
+                "id": "Mei"
+              },
+              {
+                "month":5,
+                "en": "Jun",
+                "fr": "Juin",
+                "pt": "Jun.",
+                "es": "Jun.",
+                "ka": "ივნ.",
+                "zh": "六月",
+                "id": "Jun"
+              },
+              {
+                "month":6,
+                "en": "Jul",
+                "fr": "Juil.",
+                "pt": "Jul.",
+                "es": "Jul.",
+                "ka": "ივლ.",
+                "zh": "七月",
+                "id": "Jul"
+              },
+              {
+                "month":7,
+                "en": "Aug",
+                "fr": "Août",
+                "pt": "Ago.",
+                "es": "Ago.",
+                "ka": "აგვ.",
+                "zh": "八月",
+                "id": "Agu."
+              },
+              {
+                "month":8,
+                "en": "Sep",
+                "fr": "Sept.",
+                "pt": "Set.",
+                "es": "Sept.",
+                "ka": "სექ.",
+                "zh": "九月",
+                "id": "Sep."
+              },
+               {
+                "month":9,
+                "en": "Oct",
+                "fr": "Oct.",
+                "pt": "Out.",
+                "es": "Oct.",
+                "ka": "ოქტ.",
+                "zh": "十月",
+                "id": "Okt."
+              },
+              {
+                "month":10,
+                "en": "Nov",
+                "fr": "Nov.",
+                "pt": "Nov.",
+                "es": "Nov.",
+                "ka": "ნოე.",
+                "zh": "十一月",
+                "id": "Nov."
+              },
+              {
+                "month":11,
+                "en": "Dec",
+                "fr": "Déc.",
+                "pt": "Dez.",
+                "es": "Dic.",
+                "ka": "დეკ.",
+                "zh": "十二月",
+                "id": "Des."
+              }
+            ]
+          },
+    {"name":"table_viz",
+    "source":"table",
+    "transform": [                                  
+      {"type":"lookup",
+      "from":"months",
+      "key":"month",
+      "fields":["minmonth"],
+      "values":[{"signal":"language"}],
+      "as":["min_monthname"]},
+            {"type":"lookup",
+      "from":"months",
+      "key":"month",
+      "fields":["maxmonth"],
+      "values":[{"signal":"language"}],
+      "as":["max_monthname"]}
+    ]}
+          ],
+  "marks": [
+    {
+      "type": "rect",
+      "encode": {
+        "enter": {
+          "y": {
+            "signal": "height/6.5"
+          },
+          "height": {
+            "signal": "height/1.2"
+          },
+          "width": {
+            "signal": "width/1.2"
+          },
+          "x": {
+            "signal": "width/10"
+          },
+          "stroke": {
+            "value": "#8e8e8e"
+          },
+          "fill": {
+            "value": "#DC6C9A"
+          },
+          "fillOpacity": {
+            "value": 0.3
+          },
+          "strokeWidth": {
+            "value": 1
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "table_viz"
+      },
+      "encode": {
+        "enter": {
+          "x": {
+            "signal": "width/2"
+          },
+          "y": {
+            "signal": "height/1.7"
+          },
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "text": {
+            "signal": "glad"
+          },
+          "fontSize": {
+            "value": 14
+          },
+          "fill": {
+            "value": "#282828"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "table_viz"
+      },
+      "encode": {
+        "enter": {
+          "x": {
+            "signal": "width/2"
+          },
+          "y": {
+            "signal": "height/1.35"
+          },
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "text": {
+            "signal": " '(' + datum.min_monthname + ' ' + utcFormat(datum.startdate, '%d %Y') + ' - ' + datum.max_monthname + ' ' + utcFormat(datum.enddate, '%d %Y') +')'"
+          },
+          "fontSize": {
+            "value": 11
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "table_viz"
+      },
+      "encode": {
+        "enter": {
+          "x": {
+            "signal": "width/2"
+          },
+          "y": {
+            "signal": "height/2.6"
+          },
+          "align": {
+            "value": "center"
+          },
+          "fontSize": {
+            "value": 27
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "text": {
+            "signal": "format(datum.value,' ,.0f')"
+          },
+          "fill": {
+            "value": "#DC6699"
+          }
+        }
+      }
+    }
+  ]
+}
