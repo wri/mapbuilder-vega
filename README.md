@@ -68,10 +68,10 @@ The table below lists the global MapBuilder widgets which are included in the Gl
 7) A list of parameters which must be passed from MapBuilder to the VEGA.
 8) A working call to the Analysis endpoint in the Resource Watch API
 
-| Syntax      | Description            | DatasetID   | WidgetID    | API Link   | Parameters to Pass | Analysis Endpoint
-| ----------- | ---------------------- | ----------- | ----------- |----------- | ------------------ |------------------|
-| Header      | Title       |
-| Paragraph   | Text        |
+| Widget Name | Description| DatasetID   | WidgetID   | API Widget Link | VEGA Analysis Url| Parameters to Pass | Analysis Endpoint |
+| ----------- | -----------| ----------- | -----------| --------------- | -----------------| -------------------| ----------------- |
+| Header      | Title      |
+| Paragraph   | Text       |
 
 
 
