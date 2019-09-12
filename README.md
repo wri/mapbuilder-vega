@@ -68,7 +68,9 @@ The tables below list the global MapBuilder widgets which are included in the Gl
 7) A list of parameters which must be passed from MapBuilder to the VEGA.
 8) A working call to the Analysis endpoint in the Resource Watch API
 
-## Carbon Emissions
+### Carbon Emissions from Biomass Loss
+
+This widget is used by MapBuilder to display results of the biomass loss analysis. It requries that MapBuilder pass a tcd treshold, period, and geostore to the Vega Widget which will be apended to the Vega url analysis call.
 
 | Widget Name     |Carbon-Emissions.json|
 | -----------     |---|
@@ -76,9 +78,9 @@ The tables below list the global MapBuilder widgets which are included in the Gl
 | DatasetID       |ca7ddf2b-4c4b-485f-afe7-3c1d3eea0c1f|
 | WidgetID        |ac38fdbd-fdb1-4d8e-9109-674013fb51a2|
 | API Widget Link |https://production-api.globalforestwatch.org/v1/dataset/ca7ddf2b-4c4b-485f-afe7-3c1d3eea0c1f/widget/ac38fdbd-fdb1-4d8e-9109-674013fb51a2|
-| VEGA Analysis Url||
-| Parameters to Pass||
-| Analysis Endpoint ||
+| VEGA Analysis Url|https://production-api.globalforestwatch.org/v2/biomass-loss?table=true|
+| Parameters to Pass|period,tresh,geostore|
+| Analysis Endpoint |https://production-api.globalforestwatch.org/v2/biomass-loss?table=true&period=2001-01-01,2018-12-31&geostore=18fe450d0cfd37754d61416e9113a9bd&thresh=30|
 
 
 
