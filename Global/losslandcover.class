@@ -1,0 +1,391 @@
+{
+    "schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "height": 310,
+    "width": 210,
+    "padding": 5,
+    "background":"white",
+    "signals": [
+    {
+      "name": "language",
+      "value": "en",
+      "bind": {
+        "input": "hidden",
+        "name":" ",
+        "options": [
+          "fr",
+          "ka",
+          "es",
+          "en",
+          "pt",
+          "zh",
+          "id"
+        ]
+      }
+    },
+    {"name":"type",
+    "value":"test",
+    "update":"if(data('max')[0]['max']>10000,',.0s',',.0f')"
+    },
+    {
+      "name": "xlabel",
+      "value": "Hectares (k=1,000)",
+      "update":"if(type==',.0f',if(language=='en','Hectares', if(language=='fr','Hectares',if(language=='es','Hectáreas',if(language=='pt','Hectares',if(language=='ka','ჰექტარი',if(language=='zh','公頃','Hektar')))))),if(language=='en','Hectares (k=1,000)', if(language=='fr','Hectares (k=1,000)',if(language=='es','Hectáreas (k=1,000)',if(language=='pt','Hectares (k=1,000)',if(language=='ka','ჰექტარი (k=1,000)',if(language=='zh','公頃 (k=1,000)','Hektar (k=1,000)')))))))"
+    },
+    {
+      "name": "ylabel",
+      "value": "Year",
+      "update": "if(language=='en','Year', if(language=='fr','Année',if(language=='es','Año',if(language=='pt','Ano',if(language=='ka','წელი',if(language=='zh','年','Tahun'))))))"
+    }
+  ],
+    "data": [
+        {
+            "name": "data",
+            "format": {
+                "property": "data.attributes.histogram"
+            },
+            "url": "https://production-api.globalforestwatch.org/v1/loss-by-landcover?period=2001-01-01%2C2018-12-31&geostore=937acaa2aee53528d71d3bf616a2990c&thresh=30&layer=gfw-landcover-2000",
+            "transform": [
+                {
+                    "type": "flatten",
+                    "fields": [
+                        "result"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "year",
+                    "expr": "(datum.result.year)"
+                },
+                {
+                    "type": "formula",
+                    "as": "loss",
+                    "expr": "(datum.result.result)"
+                }
+            ]
+        },
+         {
+            "name": "lookup",
+            "values": [
+                {
+                    "classVal": "1",
+                    "hex": "#D2A965",
+                    "en":"Agriculture",
+                    "fr":"Agriculture",
+                    "es":"Agricultura",
+                    "pt":"Agricultura",
+                    "id":"Agricultura",
+                    "ka":"სოფლის მეურნეობა",
+                    "zh":"农业"
+                },
+                {
+                    "classVal": "2",
+                    "hex": "#157764",
+                    "en":"Forest",
+                    "fr":"Forêt",
+                    "es":"Bosque",
+                    "pt":"Floresta",
+                    "id":"Hutan",
+                    "ka":"ტყე",
+                    "zh":"森林"
+                },
+                {
+                    "classVal": "3",
+                    "hex": "#CCDB98",
+                    "en":"Grassland",
+                    "fr":"Prairies",
+                    "es":"Pastizal",
+                    "pt":"Campo",
+                    "id":"Padang Rumput",
+                    "ka":"მინდორი",
+                    "zh":"草地"
+                },
+                {
+                    "classVal": "4",
+                    "hex": "#489BDB",
+                    "en":"Wetland",
+                    "fr":"Terres humides",
+                    "es":"Humedal",
+                    "pt":"Pantanal",
+                    "id":"Lahan Basah",
+                    "ka":"ჭარბტენიანი ტერიტორია",
+                    "zh":"湿地"
+                },
+                {
+                    "classVal": "5",
+                    "hex": "#E9462B",
+                    "en":"Settlement",
+                    "fr":"Propriété terrienne",
+                    "es":"Establecimiento",
+                    "pt":"Assentamento",
+                    "id":"Pemukiman",
+                    "ka":"დასახლებული პუნქტი",
+                    "zh":"垦殖地"
+                },
+                {
+                    "classVal": "6",
+                    "hex": "#596B2C",
+                    "en":"Shrubland",
+                    "fr":"Arbustaies",
+                    "es":"Matorral",
+                    "pt":"Vegetação arbustivo",
+                    "id":"Semak Belukar",
+                    "ka":"ბუჩქნარი",
+                    "zh":"灌木"
+                },
+                {
+                    "classVal": "7",
+                    "hex": "#D5C998",
+                    "en":"Sparse vegetation",
+                    "fr":"Végétation clairsemée",
+                    "es":"Vegetación escasa",
+                    "pt":"Vegetação esparsa",
+                    "id":"Vegetasi Jarang",
+                    "ka":"იშვიათი მცენარეულობა",
+                    "zh":"稀疏植被"
+                },
+                {
+                    "classVal": "8",
+                    "hex": "#F6F0EA",
+                    "en":"Bare",
+                    "fr":"Nu",
+                    "es":"Sin vegetación",
+                    "pt":"Solo exposto",
+                    "id":"Terbuka",
+                     "ka":"მოშიშვლებული",
+                     "zh":"裸地"
+                },
+                {
+                    "classVal": "9",
+                    "hex": "#B5E3FF",
+                    "en":"Water",
+                    "fr":"Eau",
+                    "es":"Aqua",
+                    "pt":"Água",
+                    "id":"Air",
+                    "ka":"წყალი",
+                    "zh":"水域"
+                },
+                {
+                    "classVal": "10",
+                    "hex": "#FFFFFF",
+                    "en":"Permanent snow and ice",
+                    "fr":"Neige et glace permanentes",
+                    "es":"Hielo y nieve permanentes",
+                    "pt":"Neve e gelo permanentes",
+                    "id":"Salju dan es permanen",
+                    "ka":"მუდმივი თოვლი და ყინული"
+                }
+            ]
+        },
+        {
+            "name": "Annual_Loss",
+            "source": "data",
+            "transform": [
+                {
+                    "type":"aggregate",
+                    "fields":["loss"],
+                    "ops": ["sum"],
+                    "as":["total_loss"],
+                    "groupby":["year"]
+                },
+                {
+                    "type": "formula",
+                    "expr": "round(datum.total_loss)",
+                    "as": "Total loss"
+                }]
+        },
+        {
+          "name":"max",
+          "source":"Annual_Loss",
+          "transform":[
+            {
+              "type":"aggregate",
+              "fields":["Total loss"],
+              "ops":["max"],
+              "as":["max"]}
+          ]
+        },
+        {"name":"table_viz",
+        "source":"data",
+        "transform":[{          
+                    "type": "lookup",
+                    "from": "lookup",
+                    "key": "classVal",
+                    "fields": [
+                        "classVal"
+                    ],
+                    "values": [
+                        "hex",
+                        {"signal":"language"}
+                    ],
+                    "as":["hex","class"]
+                },
+                {
+  "type": "collect",
+  "sort": {
+    "field": ["year"],
+    "order": ["ascending"]
+  }
+},
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "year"
+                    ],
+                    "field": "loss",
+                    "sort": {
+                        "field": "class",
+                        "order": "descending"
+                    }
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.loss != 0"
+                }]},
+        {
+            "name": "table",
+            "source": "table_viz",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "round(datum.loss)",
+                    "as": "loss"
+                },
+                {
+                    "type": "pivot",
+                    "field": "class",
+                    "value": "loss",
+                    "groupby": [
+                        "year"
+                    ]
+                },
+                {"type":"lookup",
+                "from":"Annual_Loss",
+                "key":"year",
+                 "fields": [
+                        "year"
+                    ],
+                    "values": [
+                        "Total loss"
+                    ]
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "y",
+            "type": "band",
+            "range": "height",
+            "padding": 0.3,
+            "domain": {
+                "data": "table_viz",
+                "field": "year"
+            }
+        },
+        {
+            "name": "x",
+            "type": "linear",
+            "range": "width",
+            "nice": true,
+            "zero": true,
+            "domain": {
+                "data": "table_viz",
+                "field": "y1"
+            }
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "range": {
+                "data": "table_viz",
+                "field": "hex"
+            },
+            "domain": {
+                "data": "table_viz",
+                "field": "class"
+            }
+        }
+    ],
+    "axes": [
+        {
+            "title": {"signal": "xlabel"},
+            "orient": "bottom",
+            "scale": "x",
+            "labelOverlap": "greedy",
+            "format": {"signal":"type"},
+            "tickCount": 5,
+                  "grid":true,
+      "encode": {
+        "grid":{
+          "update": {
+      "gridOpacity":0.3,
+      "gridColor": "#A9ABAD"}
+      }
+      }
+        },
+        {
+            "title": {"signal": "ylabel"},
+            "orient": "left",
+            "scale": "y",
+            "zindex": 1
+        }
+    ],
+    "marks": [
+        {
+            "type": "rect",
+            "from": {
+                "data": "table_viz"
+            },
+            "encode": {
+                "enter": {
+                    "y": {
+                        "scale": "y",
+                        "field": "year"
+                    },
+                    "height": {
+                        "scale": "y",
+                        "band": 1,
+                        "offset": -1
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "y0"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "field": "y1"
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "class"
+                    },
+                    "tooltip": {
+                        "signal": "datum.year + ' loss in ' + datum.class + ' areas: ' + format(datum.loss, ',.0f') + '  ha'"
+                    }
+                },
+                "update": {
+                    "fillOpacity": {
+                        "value": 1
+                    }
+                },
+                "hover": {
+                    "fillOpacity": {
+                        "value": 0.5
+                    }
+                }
+            }
+        }
+    ],
+    "legends": [
+        {
+            "titleBaseline": "top",
+            "fill": "color",
+            "orient": "bottom",
+            "columns": 2,
+            "columnPadding": 5,
+            "direction": "vertical",
+            "labelFontSize": 8
+        }
+    ]
+}
