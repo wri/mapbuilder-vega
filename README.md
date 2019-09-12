@@ -55,9 +55,9 @@ curl -X PATCH https://api.resourcewatch.org/v1/dataset/a97036a8-5526-4b85-8ffb-9
 
 For more information on interacting with the Resource Watch API please reference: https://resource-watch.github.io/doc-api/index-rw.html#create-a-widget
 
-## Global MapBuilder Widgets
+# Global MapBuilder Widgets
 
-The table below lists the global MapBuilder widgets which are included in the Global folder of this repository. The table includes:
+The tables below list the global MapBuilder widgets which are included in the Global folder of this repository. The table includes:
 
 1) Widget name in this repository
 2) A description of what the analysis is used for
@@ -68,14 +68,22 @@ The table below lists the global MapBuilder widgets which are included in the Gl
 7) A list of parameters which must be passed from MapBuilder to the VEGA.
 8) A working call to the Analysis endpoint in the Resource Watch API
 
+## Carbon Emissions
 
+| Widget Name     |
+| Description     |
+| DatasetID       |
+| WidgetID        |
+| API Widget Link | 
+| VEGA Analysis Url|
+| Parameters to Pass|
+| Analysis Endpoint |
 
 | Widget Name | Description| DatasetID   | WidgetID   | API Widget Link | VEGA Analysis Url| Parameters to Pass | Analysis Endpoint |
 | ----------- | -----------| ----------- | -----------| --------------- | -----------------| -------------------| ----------------- |
-| Carbon-Emissions.json | <font size="1">Calculate Emissions from Tree Cover Loss</font> |a97036a8-5526-4b85-8ffb-9ee2cdd9b34a | 95c2c559-ca78-4b7a-b18b-7b2bca14ce83
+| Carbon-Emissions.json | Calculate Emissions from Tree Cover Loss |a97036a8-5526-4b85-8ffb-9ee2cdd9b34a | 95c2c559-ca78-4b7a-b18b-7b2bca14ce83
 | Fires_Analysis.json  | Text       |
 
-</font>
 
 
 
