@@ -1,0 +1,164 @@
+{
+  "schema": "https://vega.github.io/schema/vega/v3.0.json",
+  "width": 210,
+  "height": 310,
+  "padding": 5,
+  "signals": [
+    {
+      "name": "language",
+      "value": "en",
+      "bind": {
+        "input": "hidden",
+        "name":" ",
+        "options": [
+          "fr",
+          "ka",
+          "es",
+          "en",
+          "pt",
+          "zh",
+          "id"
+        ]
+      }
+    },
+    {"name":"type",
+    "value":"test",
+    "update":"if(data('max')[0]['max']>10000,',.0s',',.0f')"},
+
+        {
+      "name": "ylabel",
+      "value": "Years",
+      "update": "if(language=='en','Year', if(language=='fr','Année',if(language=='es','Año',if(language=='pt','Ano',if(language=='ka','წელი',if(language=='zh','年','Tahun'))))))"
+    },
+        {
+      "name": "xlabel",
+      "value": "Hectares",
+      "update":"if(type==',.0f',if(language=='en','Hectares', if(language=='fr','Hectares',if(language=='es','Hectáreas',if(language=='pt','Hectares',if(language=='ka','ჰექტარი',if(language=='zh','公頃','Hektar')))))),if(language=='en','Hectares (k=1,000)', if(language=='fr','Hectares (k=1,000)',if(language=='es','Hectáreas (k=1,000)',if(language=='pt','Hectares (k=1,000)',if(language=='ka','ჰექტარი (k=1,000)',if(language=='zh','公頃 (k=1,000)','Hektar (k=1,000)')))))))"
+    }
+  ],
+  "data": [
+    {
+      "name": "table",
+      "format": {
+        "property": "data.attributes"
+      },
+      "url": "https://production-api.globalforestwatch.org/v1/umd-loss-gain?aggregate_values=false&table=true",
+      "transform":[
+        {
+        "type":"project",
+        "fields": ["year", "loss"],
+        "as":["year","loss"]}
+      ]
+    },
+    {
+    "name":"max",
+    "source":"table",
+    "transform":[
+    {
+  "type": "aggregate",
+  "fields": ["loss"],
+  "ops": ["max"],
+  "as": ["max"]
+}]
+    }
+  ],
+  "scales": [
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {
+        "data": "table",
+        "field": "year"
+      },
+      "range": "height",
+      "padding": 0.3
+    },
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "data": "table",
+        "field": "loss"
+      },
+      "range": "width",
+      "round": true,
+      "zero": true,
+      "nice": true
+    }
+  ],
+  "axes": [
+    {
+      "title": {
+        "signal": "ylabel"
+      },
+      "orient": "left",
+      "scale": "y",
+      "tickSize": 0,
+      "labelPadding": 4,
+      "zindex": 1
+    },
+    {
+      "title": {
+        "signal": "xlabel"
+      },
+      "orient": "bottom",
+      "scale": "x",
+      "grid":true,
+      "labelOverlap": "greedy",
+      "format": {"signal":"type"},
+      "tickCount": 5,
+      "encode": {
+        "grid":{
+          "update": {
+      "gridOpacity":0.3,
+      "gridColor": "#A9ABAD"}
+      }
+      }
+    }
+  ],
+  "marks": [
+    {
+      "name": "bars",
+      "from": {
+        "data": "table"
+      },
+      "type": "rect",
+      "encode": {
+        "enter": {
+          "y": {
+            "scale": "y",
+            "field": "year"
+          },
+          "height": {
+            "scale": "y",
+            "band": 1
+          },
+          "x": {
+            "scale": "x",
+            "field": "loss"
+          },
+          "x2": {
+            "scale": "x",
+            "value": 0
+          },
+          "fill": {
+            "value": "#DC6699"
+          },
+          "tooltip": {
+            "signal": "datum.year + ' : ' + format(datum.loss, ' ,.0f') + ' ha'"
+          }
+        },
+        "hover": {
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "update": {
+          "opacity": {
+            "value": 0.9
+          }
+        }
+      }
+    }
+  ]
+}
