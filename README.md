@@ -55,20 +55,20 @@ curl -X PATCH https://api.resourcewatch.org/v1/dataset/a97036a8-5526-4b85-8ffb-9
 
 For more information on interacting with the Resource Watch API please reference: https://resource-watch.github.io/doc-api/index-rw.html#create-a-widget
 
-# Global MapBuilder Widgets
+## Global MapBuilder Widgets
 
 The tables below list the global MapBuilder widgets which are included in the Global folder of this repository. The table includes:
 
 1) Widget name in this repository
 2) A description of what the analysis is used for
-3) The datasetID
-4) The WidgetID
+3) The datasetID in API
+4) The WidgetID in API
 5) A link to the widget in the API
 6) The analysis url used in the Vega
 7) A list of parameters which must be passed from MapBuilder to the VEGA.
-8) A working call to the Analysis endpoint in the Resource Watch API
+8) A working call to the analysis endpoint in the Resource Watch API, in which the necessary parameters have been added to the call.
 
-### Carbon Emissions from Biomass Loss
+#### Carbon Emissions from Biomass Loss
 
 This widget is used by MapBuilder to display results of the biomass loss analysis. It requries that MapBuilder pass a tcd treshold, period, and geostore to the Vega Widget which will be apended to the Vega url analysis call.
 
