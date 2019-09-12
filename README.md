@@ -70,12 +70,12 @@ The tables below list the global MapBuilder widgets which are included in the Gl
 
 ## Carbon Emissions
 
-| Widget Name     ||
+| Widget Name     |Carbon-Emissions.json|
 | -----------     |---|
-| Description     ||
-| DatasetID       ||
-| WidgetID        ||
-| API Widget Link ||
+| Description     |This widget is used to calculate carbon emissions from above ground biomass loss|
+| DatasetID       |ca7ddf2b-4c4b-485f-afe7-3c1d3eea0c1f|
+| WidgetID        |ac38fdbd-fdb1-4d8e-9109-674013fb51a2|
+| API Widget Link |https://production-api.globalforestwatch.org/v1/dataset/ca7ddf2b-4c4b-485f-afe7-3c1d3eea0c1f/widget/ac38fdbd-fdb1-4d8e-9109-674013fb51a2|
 | VEGA Analysis Url||
 | Parameters to Pass||
 | Analysis Endpoint ||
