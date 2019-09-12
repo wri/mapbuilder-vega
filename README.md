@@ -70,14 +70,15 @@ The tables below list the global MapBuilder widgets which are included in the Gl
 
 ## Carbon Emissions
 
-| Widget Name     |
-| Description     |
-| DatasetID       |
-| WidgetID        |
-| API Widget Link | 
-| VEGA Analysis Url|
-| Parameters to Pass|
-| Analysis Endpoint |
+| -----------     ||
+| Widget Name     ||
+| Description     ||
+| DatasetID       ||
+| WidgetID        ||
+| API Widget Link ||
+| VEGA Analysis Url||
+| Parameters to Pass||
+| Analysis Endpoint ||
 
 | Widget Name | Description| DatasetID   | WidgetID   | API Widget Link | VEGA Analysis Url| Parameters to Pass | Analysis Endpoint |
 | ----------- | -----------| ----------- | -----------| --------------- | -----------------| -------------------| ----------------- |
