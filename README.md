@@ -68,11 +68,11 @@ The table below lists the global MapBuilder widgets which are included in the Gl
 7) A list of parameters which must be passed from MapBuilder to the VEGA.
 8) A working call to the Analysis endpoint in the Resource Watch API
 
-<font size="1">
+
 
 | Widget Name | Description| DatasetID   | WidgetID   | API Widget Link | VEGA Analysis Url| Parameters to Pass | Analysis Endpoint |
 | ----------- | -----------| ----------- | -----------| --------------- | -----------------| -------------------| ----------------- |
-| Carbon-Emissions.json | Calculate Emissions from Tree Cover Loss |a97036a8-5526-4b85-8ffb-9ee2cdd9b34a | 95c2c559-ca78-4b7a-b18b-7b2bca14ce83
+| Carbon-Emissions.json | <font size="1">Calculate Emissions from Tree Cover Loss</font> |a97036a8-5526-4b85-8ffb-9ee2cdd9b34a | 95c2c559-ca78-4b7a-b18b-7b2bca14ce83
 | Fires_Analysis.json  | Text       |
 
 </font>
