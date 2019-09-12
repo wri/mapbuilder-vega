@@ -55,60 +55,7 @@ curl -X PATCH https://api.resourcewatch.org/v1/dataset/a97036a8-5526-4b85-8ffb-9
 
 For more information on interacting with the Resource Watch API please reference: https://resource-watch.github.io/doc-api/index-rw.html#create-a-widget
 
-## Global MapBuilder Widgets
-
-The tables below list the global MapBuilder widgets which are included in the Global folder of this repository. The table includes:
-
-1) Widget name in this repository
-2) A description of what the analysis is used for
-3) The datasetID in API
-4) The WidgetID in API
-5) A link to the widget in the API
-6) The analysis url used in the Vega
-7) A list of parameters which must be passed from MapBuilder to the VEGA.
-8) A working call to the analysis endpoint in the Resource Watch API, in which the necessary parameters have been added to the call.
-
-#### Aggregated Annual Tree Cover Loss
-
-This widget is used by MapBuilder to display results for aggregated tree cover loss and gain call. It requries that MapBuilder pass a tcd treshold, period, and geostore to the Vega Widget which will be apended to the Vega url analysis call.
-
-| Widget Name     |totallossgain.json|
-| -----------     |---|
-| Description     |This widget is used to calculate aggregated tree cover loss|
-| DatasetID       |a97036a8-5526-4b85-8ffb-9ee2cdd9b34a|
-| WidgetID        |95c2c559-ca78-4b7a-b18b-7b2bca14ce83|
-| API Widget Link |https://production-api.globalforestwatch.org/v1/dataset/a97036a8-5526-4b85-8ffb-9ee2cdd9b34a/widget/95c2c559-ca78-4b7a-b18b-7b2bca14ce833|
-| VEGA Analysis Url|https://production-api.globalforestwatch.org/v1/umd-loss-gain?|
-| Parameters to Pass|period,tresh,geostore|
-| Analysis Endpoint |https://production-api.globalforestwatch.org/v1/umd-loss-gain?period=2001-01-01,2018-12-31&geostore=502aa120e1b3cf334a8312e232275a52&thresh=30|
-
-#### Disagregated Annual Tree Cover Loss
-
-This widget is used by MapBuilder to display results for tree cover loss analysis disaggregated by year. It requries that MapBuilder pass a tcd treshold, period, and geostore to the Vega Widget which will be apended to the Vega url analysis call.
-
-| Widget Name     |annualtclloss.json|
-| -----------     |---|
-| Description     |This widget is used to calculate annual tree cover loss disaggregated by year|
-| DatasetID       |a97036a8-5526-4b85-8ffb-9ee2cdd9b34a|
-| WidgetID        |e53e541c-92cd-4b00-9aa7-2c7bb36d4697|
-| API Widget Link |https://production-api.globalforestwatch.org/v1/dataset/a97036a8-5526-4b85-8ffb-9ee2cdd9b34a/widget/e53e541c-92cd-4b00-9aa7-2c7bb36d4697|
-| VEGA Analysis Url|https://production-api.globalforestwatch.org/v1/umd-loss-gain?aggregate_values=false&table=true|
-| Parameters to Pass|period,tresh,geostore|
-| Analysis Endpoint |https://production-api.globalforestwatch.org/v1/umd-loss-gain?aggregate_values=false&table=true&period=2001-01-01,2018-12-31&geostore=eafd61c47ccfc34c39a390783fcbd302&thresh=30|
-
-#### Carbon Emissions from Biomass Loss
-
-This widget is used by MapBuilder to display results of the biomass loss analysis. It requries that MapBuilder pass a tcd treshold, period, and geostore to the Vega Widget which will be apended to the Vega url analysis call.
-
-| Widget Name     |Carbon-Emissions.json|
-| -----------     |---|
-| Description     |This widget is used to calculate carbon emissions from above ground biomass loss|
-| DatasetID       |ca7ddf2b-4c4b-485f-afe7-3c1d3eea0c1f|
-| WidgetID        |ac38fdbd-fdb1-4d8e-9109-674013fb51a2|
-| API Widget Link |https://production-api.globalforestwatch.org/v1/dataset/ca7ddf2b-4c4b-485f-afe7-3c1d3eea0c1f/widget/ac38fdbd-fdb1-4d8e-9109-674013fb51a2|
-| VEGA Analysis Url|https://production-api.globalforestwatch.org/v2/biomass-loss?table=true|
-| Parameters to Pass|period,tresh,geostore|
-| Analysis Endpoint |https://production-api.globalforestwatch.org/v2/biomass-loss?table=true&period=2001-01-01,2018-12-31&geostore=18fe450d0cfd37754d61416e9113a9bd&thresh=30|
+For documentation on the existing widgets in this repository please refernece the mapbuilder-vega github wiki. https://github.com/wri/mapbuilder-vega/wiki/Global-MapBuilder-Widgets
 
 
 
