@@ -1,0 +1,302 @@
+{
+"schema": "https://vega.github.io/schema/vega/v3.0.json",
+"width": 250,
+"height": 300,
+"padding": 5,
+"background":"white",
+ "signals": [
+    {
+      "name": "language",
+      "value": "en",
+      "bind": {
+        "input": "hidden",
+        "name":" ",
+        "options": [
+          "fr",
+          "ka",
+          "es",
+          "en",
+          "pt",
+          "zh",
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "gain",
+      "value": "Total Gain",
+      "update":"if(language=='en','Total Gain', if(language=='fr','Gain total',if(language=='es','Ganancia total',if(language=='pt','Ganho total',if(language=='ka','საერთო მატება',if(language=='zh','总增加面积','Total Perolehan'))))))"
+    },
+    {
+      "name": "loss",
+      "value": "Total Loss",
+      "update": "if(language=='en','Total Loss', if(language=='fr','Perte totale',if(language=='es','Pérdida total',if(language=='pt','Perda total',if(language=='ka','საერთო კარგვა',if(language=='zh','总减少量','Kehilangan Total'))))))"
+    }],
+"data": [
+{
+"name": "table",
+"format": {
+"property": "data.attributes"
+},
+"url": "https://production-api.globalforestwatch.org/v1/umd-loss-gain?",
+"transform": [
+{
+"type": "formula",
+"as": "gain",
+"expr": "round(datum.gain)"
+},
+{
+"type": "formula",
+"as": "loss",
+"expr": "round(datum.loss)"
+},
+{
+"type":"formula",
+"as":"loss_end_year",
+"expr": "datum.loss_end_year + 2000"},
+{
+"type":"formula",
+"as":"loss_start_year",
+"expr": "datum.loss_start_year + 2000"}
+]
+}
+],
+"marks": [
+{
+"type": "rect",
+"encode": {
+"enter": {
+"y": {
+"signal": "height/6"
+},
+"height": {
+"signal": "height/3.7"
+},
+"width": {
+"signal": "2*width/3"
+},
+"x": {
+"signal": "width/6"
+},
+"stroke": {
+"value": "#CF5188"
+},
+"fill": {
+"value": "white"
+},
+"strokeWidth": {
+"value": 4
+}
+}
+}
+},
+{
+"type": "rect",
+"encode": {
+"enter": {
+"y": {
+"signal": "height/1.7"
+},
+"height": {
+"signal": "height/4"
+},
+"width": {
+"signal": "2*width/3"
+},
+"x": {
+"signal": "width/6"
+},
+"stroke": {
+"value": "#7978E8"
+},
+"fill": {
+"value": "white"
+},
+"strokeWidth": {
+"value": 4
+}
+}
+}
+},
+{
+"type": "text",
+"from": {
+"data": "table"
+},
+"encode": {
+"enter": {
+"x": {
+"signal": "width/2"
+},
+"y": {
+"signal": "height/4.5"
+},
+"align": {
+"value": "center"
+},
+"baseline": {
+"value": "middle"
+},
+"text": {
+"signal": "loss"
+},
+"fontSize": {
+"value": 14
+}
+}
+}
+},
+{
+"type": "text",
+"from": {
+"data": "table"
+},
+"encode": {
+"enter": {
+"x": {
+"signal": "width/2"
+},
+"y": {
+"signal": "height/3.4"
+},
+"align": {
+"value": "center"
+},
+"baseline": {
+"value": "middle"
+},
+"text": {
+"signal": "'('+ datum.loss_start_year + ' - ' + datum.loss_end_year + ')'"
+},
+"fontSize": {
+"value": 14
+}
+}
+}
+},
+{
+"type": "text",
+"from": {
+"data": "table"
+},
+"encode": {
+"enter": {
+"x": {
+"signal": "width/2"
+},
+"y": {
+"signal": "height/2.7"
+},
+"align": {
+"value": "center"
+},
+"fontSize": {
+"value": 24
+},
+"fontWeight": {
+"value": "bold"
+},
+"baseline": {
+"value": "middle"
+},
+"text": {
+"signal": "format(datum.loss, ',.0f') + ' ha'"
+},
+"fill": {
+"value": "#CF5188"
+}
+}
+}
+},
+{
+"type": "text",
+"from": {
+"data": "table"
+},
+"encode": {
+"enter": {
+"x": {
+"signal": "width/2"
+},
+"y": {
+"signal": "height/1.57"
+},
+"align": {
+"value": "center"
+},
+"baseline": {
+"value": "middle"
+},
+"text": {
+    "signal": "gain"
+},
+"fontSize": {
+"value": 14
+}
+}
+}
+},
+{
+"type": "text",
+"from": {
+"data": "table"
+},
+"encode": {
+"enter": {
+"x": {
+"signal": "width/2"
+},
+"y": {
+"signal": "height/1.43"
+},
+"align": {
+"value": "center"
+},
+"baseline": {
+"value": "middle"
+},
+"text": {
+"value": "(2000 - 2012)"
+},
+"fontSize": {
+"value": 14
+}
+}
+}
+},
+{
+"type": "text",
+"from": {
+"data": "table"
+},
+"encode": {
+"enter": {
+"x": {
+"signal": "width/2"
+},
+"y": {
+"signal": "height/1.28"
+},
+"align": {
+"value": "center"
+},
+"fontSize": {
+"value": 24
+},
+"fontWeight": {
+"value": "bold"
+},
+"baseline": {
+"value": "middle"
+},
+"text": {
+"signal": "format(datum.gain, ',.0f') + ' ha'"
+},
+"fill": {
+"value": "#7978E8"
+}
+}
+}
+}
+]
+}
