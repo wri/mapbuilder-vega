@@ -86,7 +86,7 @@
               },
               {
                 "type": "filter",
-                "expr": "datum.date < datetime(2019, 8)"
+                "expr": "datum.date < datetime(2019, 9)"
               }
             ]
           },
