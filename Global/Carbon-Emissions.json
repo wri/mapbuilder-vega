@@ -83,7 +83,9 @@
             "orient": "left",
             "scale": "y",
             "tickCount": 5,
-            "format": ",.0f"
+            "format": ",.0f",
+            "grid":true,
+            "gridOpacity":0.6
         }
     ],
     "marks": [
