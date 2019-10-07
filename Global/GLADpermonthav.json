@@ -462,7 +462,9 @@
             "title": {"signal":"ylabel"},
             "orient": "left",
             "scale": "y",
-            "format": ",.0f"
+            "format": ",.0f",
+            "grid": true,
+            "tickCount":5
           }
         ],
         "marks": [
