@@ -1,9 +1,10 @@
 {
         "schema": "https://vega.github.io/schema/vega/v3.0.json",
-        "width": 200,
-        "height": 250,
+        "width": 240,
+        "height": 330,
         "background":"white",
         "padding": 5,
+        "autosize":"fit",
          "signals": [
     {
       "name": "language",
@@ -39,7 +40,7 @@
             "format": {
               "property": "data.attributes.value"
             },
-            "url": "https://production-api.globalforestwatch.org/v1/glad-alerts?period=2015-01-01,2019-12-31&aggregate_values=true&aggregate_by=month",
+            "url": "https://production-api.globalforestwatch.org/v1/glad-alerts?period=2016-01-01,2019-12-31&aggregate_values=true&aggregate_by=month",
             "transform": [
               {
                 "type": "formula",
@@ -219,23 +220,19 @@
             "name": "lookup",
             "values": [
               {
-                "hex": "#d8d8d8",
-                "year": "2015"
-              },
-              {
                 "hex": "#aaaaaa",
                 "year": "2016"
               },
               {
-                "hex": "#8A8A8A",
+                "hex": "#ffcae5",
                 "year": "2017"
               },
               {
-                "hex": "#fc92f7",
+                "hex": "#ff77bc",
                 "year": "2018"
               },
               {
-                "hex": "#ed07e1",
+                "hex": "#ff0081",
                 "year": "2019"
               }
             ]
@@ -348,7 +345,7 @@
                       "field": "count"
                     },
                     "strokeWidth": {
-                      "value": 0.6
+                      "signal": "if(datum.year == 2019, 1, 0.5)"
                     },
                     "interpolate": {
                       "value": "linear"
@@ -383,7 +380,7 @@
                       "field": "year"
                     },
                     "size": {
-                      "value": 13
+                      "signal": "if(datum.year == 2019, 20, 10)"
                     },
                     "tooltip": [
 {
