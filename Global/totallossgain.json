@@ -4,6 +4,7 @@
 "height": 300,
 "padding": 5,
 "background":"white",
+ "autosize":true,
  "signals": [
     {
       "name": "language",
