@@ -1,9 +1,10 @@
 {
         "schema": "https://vega.github.io/schema/vega/v3.0.json",
-        "width": 180,
-        "height": 250,
+        "width": 240,
+        "height": 330,
         "background":"white",
         "padding": 5,
+        "autosize":"fit",
         "signals": [
     {
       "name": "language",
@@ -528,7 +529,7 @@
                       "field": "count"
                     },
                     "strokeWidth": {
-                      "value": 0.6
+                      "signal": "if(datum.year == 2019, 1, 0.5)"
                     },
                     "interpolate": {
                       "value": "linear"
@@ -563,7 +564,7 @@
                       "field": "year"
                     },
                     "size": {
-                      "value": 13
+                      "signal": "if(datum.year == 2019, 20, 10)"
                     },
                     "tooltip": [
                       {

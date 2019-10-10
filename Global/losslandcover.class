@@ -1,9 +1,10 @@
 {
     "schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "height": 310,
-    "width": 210,
-    "padding": 5,
-    "background":"white",
+  "width": 240,
+  "height": 340,
+  "padding": 2,
+  "autosize":"fit",
+"background":"white",
     "signals": [
     {
       "name": "language",
