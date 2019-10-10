@@ -3,6 +3,7 @@
 "width": 250,
 "height": 150,
 "padding": 5,
+"autosize":"fit",
 "background": "white",
 "signals": [
     {
