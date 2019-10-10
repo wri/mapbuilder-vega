@@ -40,7 +40,7 @@
             "format": {
               "property": "data.attributes.value"
             },
-            "url": "https://production-api.globalforestwatch.org/v1/glad-alerts?period=2015-01-01,2019-12-31&aggregate_values=true&aggregate_by=month&geostore=eafd61c47ccfc34c39a390783fcbd302",
+            "url": "https://production-api.globalforestwatch.org/v1/glad-alerts?period=2015-01-01,2019-12-31&aggregate_values=true&aggregate_by=month",
             "transform": [
               {
                 "type": "formula",
