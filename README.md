@@ -57,7 +57,7 @@ For more information on interacting with the Resource Watch API please reference
 
 ## Existing MapBuilder widgets
 
-For documentation on the existing widgets in this repository please refernece the mapbuilder-vega github wiki. https://github.com/wri/mapbuilder-vega/wiki/Global-MapBuilder-Widgets
+For documentation on the existing widgets in this repository please refernece the mapbuilder-vega github wiki. https://github.com/wri/mapbuilder-vega/wiki
 
 
 
