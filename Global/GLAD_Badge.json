@@ -34,7 +34,7 @@
       "format": {
         "property": "data"
       },
-      "url": "https://production-api.globalforestwatch.org/v1/glad-alerts?aggregate_values=true&aggregate_by=day"
+      "url": "https://production-api.globalforestwatch.org/v1/glad-alerts?aggregate_values=false"
 },
 {
 "name":"table",
