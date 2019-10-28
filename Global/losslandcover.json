@@ -44,7 +44,7 @@
             "format": {
                 "property": "data.attributes.histogram"
             },
-            "url": "https://production-api.globalforestwatch.org/v1/loss-by-landcover?period=2001-01-01%2C2018-12-31",
+            "url": "https://production-api.globalforestwatch.org/v1/loss-by-landcover?",
             "transform": [
                 {
                     "type": "flatten",
