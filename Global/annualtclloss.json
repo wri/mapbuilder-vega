@@ -24,17 +24,17 @@
     },
     {"name":"type",
     "value":"test",
-    "update":"if(data('max')[0]['max']>10000,',.0s',',.0f')"},
-
+    "update":"if(data('table')[0]['max_loss']>10000,',.0s',if(data('table')[0]['max_loss']<6,',.2f',',.0f'))"
+    },
         {
       "name": "ylabel",
       "value": "Years",
       "update": "if(language=='en','Year', if(language=='fr','Année',if(language=='es','Año',if(language=='pt','Ano',if(language=='ka','წელი',if(language=='zh','年','Tahun'))))))"
     },
-        {
+    {
       "name": "xlabel",
-      "value": "Hectares",
-      "update":"if(type==',.0f',if(language=='en','Hectares', if(language=='fr','Hectares',if(language=='es','Hectáreas',if(language=='pt','Hectares',if(language=='ka','ჰექტარი',if(language=='zh','公頃','Hektar')))))),if(language=='en','Hectares (k=1,000)', if(language=='fr','Hectares (k=1,000)',if(language=='es','Hectáreas (k=1,000)',if(language=='pt','Hectares (k=1,000)',if(language=='ka','ჰექტარი (k=1,000)',if(language=='zh','公頃 (k=1,000)','Hektar (k=1,000)')))))))"
+      "value": "Hectares (k=1,000)",
+      "update":"if(type==',.0s',if(language=='en','Hectares (k=1,000)', if(language=='fr','Hectares (k=1,000)',if(language=='es','Hectáreas (k=1,000)',if(language=='pt','Hectares (k=1,000)',if(language=='ka','ჰექტარი (k=1,000)',if(language=='zh','公頃 (k=1,000)','Hektar (k=1,000)')))))),if(language=='en','Hectares', if(language=='fr','Hectares',if(language=='es','Hectáreas',if(language=='pt','Hectares',if(language=='ka','ჰექტარი',if(language=='zh','公頃','Hektar')))))))"
     }
   ],
   "data": [
@@ -43,24 +43,20 @@
       "format": {
         "property": "data.attributes"
       },
-      "url": "https://production-api.globalforestwatch.org/v1/umd-loss-gain?aggregate_values=false&table=true",
+      "url": "https://production-api.globalforestwatch.org/v1/umd-loss-gain?aggregate_values=false&table=true&period=2001-01-01,2018-12-31&geostore=2d1f3d906591be66d0177cda03fb11c7&thresh=30",
       "transform":[
         {
         "type":"project",
         "fields": ["year", "loss"],
-        "as":["year","loss"]}
+        "as":["year","loss"]
+        },
+        {
+        "type":"joinaggregate",
+        "fields":["loss"],
+        "ops":["max"],
+        "as":["max_loss"]
+        }
       ]
-    },
-    {
-    "name":"max",
-    "source":"table",
-    "transform":[
-    {
-  "type": "aggregate",
-  "fields": ["loss"],
-  "ops": ["max"],
-  "as": ["max"]
-}]
     }
   ],
   "scales": [
