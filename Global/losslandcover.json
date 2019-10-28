@@ -25,12 +25,12 @@
     },
     {"name":"type",
     "value":"test",
-    "update":"if(data('max')[0]['max']>10000,',.0s',',.0f')"
+    "update":"if(data('data')[0]['max_annual_loss']>10000,',.0s',if(data('data')[0]['max_annual_loss']<11,',.1f',',.0f'))"
     },
     {
       "name": "xlabel",
       "value": "Hectares (k=1,000)",
-      "update":"if(type==',.0f',if(language=='en','Hectares', if(language=='fr','Hectares',if(language=='es','Hectáreas',if(language=='pt','Hectares',if(language=='ka','ჰექტარი',if(language=='zh','公頃','Hektar')))))),if(language=='en','Hectares (k=1,000)', if(language=='fr','Hectares (k=1,000)',if(language=='es','Hectáreas (k=1,000)',if(language=='pt','Hectares (k=1,000)',if(language=='ka','ჰექტარი (k=1,000)',if(language=='zh','公頃 (k=1,000)','Hektar (k=1,000)')))))))"
+      "update":"if(type==',.0s',if(language=='en','Hectares (k=1,000)', if(language=='fr','Hectares (k=1,000)',if(language=='es','Hectáreas (k=1,000)',if(language=='pt','Hectares (k=1,000)',if(language=='ka','ჰექტარი (k=1,000)',if(language=='zh','公頃 (k=1,000)','Hektar (k=1,000)')))))),if(language=='en','Hectares', if(language=='fr','Hectares',if(language=='es','Hectáreas',if(language=='pt','Hectares',if(language=='ka','ჰექტარი',if(language=='zh','公頃','Hektar')))))))"
     },
     {
       "name": "ylabel",
@@ -44,7 +44,7 @@
             "format": {
                 "property": "data.attributes.histogram"
             },
-            "url": "https://production-api.globalforestwatch.org/v1/loss-by-landcover?period=2001-01-01%2C2018-12-31&geostore=937acaa2aee53528d71d3bf616a2990c&thresh=30&layer=gfw-landcover-2000",
+            "url": "https://production-api.globalforestwatch.org/v1/loss-by-landcover?period=2001-01-01%2C2018-12-31",
             "transform": [
                 {
                     "type": "flatten",
@@ -61,6 +61,47 @@
                     "type": "formula",
                     "as": "loss",
                     "expr": "(datum.result.result)"
+                },
+                {
+                  "type":"joinaggregate",
+                  "groupby":["classVal"],
+                  "fields":["loss"],
+                  "ops":["sum"],
+                  "as":["class_loss"]
+                },
+                {
+                  "type":"filter",
+                  "expr": "datum.class_loss != 0"
+                },
+                {
+                    "type":"joinaggregate",
+                    "fields":["loss"],
+                    "ops": ["sum"],
+                    "as":["annual_loss"],
+                    "groupby":["year"]
+                },
+                {
+                    "type":"joinaggregate",
+                    "fields":["annual_loss"],
+                    "ops": ["max"],
+                    "as":["max_annual_loss"]
+                },
+                                {
+  "type": "collect",
+  "sort": {
+    "field": ["year"],
+    "order": ["ascending"]
+  }},
+                  {
+                    "type": "stack",
+                    "groupby": [
+                        "year"
+                    ],
+                    "field": "loss",
+                    "sort": {
+                        "field": "class",
+                        "order": "descending"
+                    }
                 }
             ]
         },
@@ -178,34 +219,6 @@
                 }
             ]
         },
-        {
-            "name": "Annual_Loss",
-            "source": "data",
-            "transform": [
-                {
-                    "type":"aggregate",
-                    "fields":["loss"],
-                    "ops": ["sum"],
-                    "as":["total_loss"],
-                    "groupby":["year"]
-                },
-                {
-                    "type": "formula",
-                    "expr": "round(datum.total_loss)",
-                    "as": "Total loss"
-                }]
-        },
-        {
-          "name":"max",
-          "source":"Annual_Loss",
-          "transform":[
-            {
-              "type":"aggregate",
-              "fields":["Total loss"],
-              "ops":["max"],
-              "as":["max"]}
-          ]
-        },
         {"name":"table_viz",
         "source":"data",
         "transform":[{          
@@ -220,58 +233,7 @@
                         {"signal":"language"}
                     ],
                     "as":["hex","class"]
-                },
-                {
-  "type": "collect",
-  "sort": {
-    "field": ["year"],
-    "order": ["ascending"]
-  }
-},
-                {
-                    "type": "stack",
-                    "groupby": [
-                        "year"
-                    ],
-                    "field": "loss",
-                    "sort": {
-                        "field": "class",
-                        "order": "descending"
-                    }
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum.loss != 0"
-                }]},
-        {
-            "name": "table",
-            "source": "table_viz",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "round(datum.loss)",
-                    "as": "loss"
-                },
-                {
-                    "type": "pivot",
-                    "field": "class",
-                    "value": "loss",
-                    "groupby": [
-                        "year"
-                    ]
-                },
-                {"type":"lookup",
-                "from":"Annual_Loss",
-                "key":"year",
-                 "fields": [
-                        "year"
-                    ],
-                    "values": [
-                        "Total loss"
-                    ]
-                }
-            ]
-        }
+                }]}
     ],
     "scales": [
         {
