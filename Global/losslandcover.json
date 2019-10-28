@@ -25,7 +25,7 @@
     },
     {"name":"type",
     "value":"test",
-    "update":"if(data('data')[0]['max_annual_loss']>10000,',.0s',if(data('data')[0]['max_annual_loss']<11,',.1f',',.0f'))"
+    "update":"if(data('data')[0]['max_annual_loss']>10000,',.0s',if(data('data')[0]['max_annual_loss']<6,',.2f',',.0f'))"
     },
     {
       "name": "xlabel",
