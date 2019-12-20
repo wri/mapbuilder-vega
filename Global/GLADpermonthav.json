@@ -315,54 +315,23 @@
             ]
           },
           {
-            "name": "table",
-            "source": "data",
-            "transform": [             
-                {
-                "type": "lookup",
-                "from": "months",
-                "key": "month",
-                "fields": [
-                  "month"
-                ],
-                "values": [
-                  {"signal":"language"}
-                ],
-                "as":["month_name"]
-              },
-              {
-                "type": "project",
-                "fields": [
-                  "month_name",
-                  "year",
-                  "count"
-                ],
-                "as": [
-                  "month",
-                  "year",
-                  "alert_count"
-                ]
-              },
-              {
+            "name": "range",
+            "source": "table_viz",
+            "transform": [
+                            {
                 "type": "pivot",
                 "groupby": [
-                  "month"
+                  "month_name"
                 ],
                 "field": "year",
-                "value": "alert_count"
-              }
-            ]
-          },
-          {
-            "name": "range",
-            "source": "table",
-            "transform": [
-                              {
+                "value": "count"
+              },
+               {
                 "type": "lookup",
                 "from": "table_av",
                 "key": "month_name",
                 "fields": [
-                  "month"
+                  "month_name"
                 ],
                 "values": [
                   "average"
@@ -381,7 +350,7 @@
                 "fields": [
                   "key",
                   "value",
-                  "month"
+                  "month_name"
                 ],
                 "as": [
                   "year",
@@ -389,7 +358,7 @@
                   "month"
                 ]
               },
-                            {"type": "filter", "expr": "isNumber(datum.count)"}
+        {"type": "filter", "expr": "isNumber(datum.count)"}
             ]
           }
         ],
