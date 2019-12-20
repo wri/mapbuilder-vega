@@ -221,7 +221,7 @@
             "values": [
               {
                 "year": "2018",
-                "hex": "#8A8A8A",
+                "hex": "#838585",
                 "label": "2018"
               },
               {
@@ -306,7 +306,7 @@
                {
                 "type": "formula",
                 "as": "hex",
-                "expr": "'#CFCFCF'"
+                "expr": "'#b3b5b5'"
               },
               {"type":"formula",
               "as":"label",
@@ -495,7 +495,7 @@
               },
               "update": {
                 "fill": {
-                  "value": "#E3E1E3"
+                  "value": "#b3b5b5"
                 },
                 "opacity": {
                   "value": 0.5
