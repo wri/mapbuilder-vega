@@ -1,0 +1,278 @@
+{
+    "schema": "https://vega.github.io/schema/vega/v4.0.json",
+    "width": 280,
+    "height": 350,
+    "autosize":"fit",
+    "padding": 5,
+    "signals": [
+    {
+      "name": "language",
+      "value": "ka",
+      "bind": {
+        "input": "hidden",
+        "name":" ",
+        "options": [
+          "ka",
+          "en"
+        ]
+      }
+    },
+            {
+      "name": "ylabel",
+      "value": "Area (hectares)",
+      "update": "if(language=='ka','ფართობი (ჰა)','Area (hectares)')"
+    },
+                {
+      "name": "xlabel",
+      "value": "Area (hectares)",
+      "update": "if(language=='ka','ხის ვარჯის კარგვა  მიზეზების მიხედვით','Tree Cover Loss Drivers')"
+    }
+    ],
+    
+    "data": [
+        {
+            "name": "histogram",
+            "format": {
+                "property": "histograms[0].counts"
+            },
+            "url": "https://production-api.globalforestwatch.org/v1/arcgis-proxy/ImageServer/computeHistograms?serverUrl=https://gis.mepa.gov.ge/server/&service=analysis/RiskRaster&pixelSize=15&renderingRule={\"rasterFunction\":\"Identity\",\"rasterFunctionArguments\":{\"Raster\":\"$20\"}}",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "round(datum.data * 0.0225)",
+                    "as": "value"
+                },
+                {
+                    "type": "identifier",
+                    "as": "id"
+                }
+            ]
+        },
+            {
+            "name": "lookup",
+            "values": [
+                {
+                    "id": 1,
+                    "ka_additional": "No data",
+                    "en_additional": "No data",
+                    "ka_driver": "No data",
+                    "en_driver": "No data",
+                    "hex": "#e1e1e1"
+                },
+                {
+                    "id": 2,
+                    "ka_additional": "სოფლის მეურნეობაში",
+                    "en_additional": "Agriculture conversion",
+                    "ka_driver": "სოფლის მეურნეობა",
+                    "en_driver": "Agriculture",
+                    "hex": "#ffe900"
+                },
+                {
+                    "id": 3,
+                    "ka_additional": "სოციალური ჭრები",
+                    "en_additional": "Social forest cuts",
+                    "ka_driver": "ჭრები",
+                    "en_driver": "Forest cut",
+                    "hex": "#99d8c9"
+                },
+                 {
+                    "id": 4,
+                    "ka_additional": "კომერციული ჭრები",
+                    "en_additional": "Commercial forest cuts",
+                    "ka_driver": "ჭრები",
+                    "en_driver": "Forest cut",
+                    "hex": "#41ae76"
+                },
+                                 {
+                    "id": 5,
+                    "ka_additional": "სპეციალური ჭრები",
+                    "en_additional": "Special forest cuts",
+                    "ka_driver": "ჭრები",
+                    "en_driver": "Forest cut",
+                    "hex": "#006d2c"
+                },
+                                 {
+                    "id": 6,
+                    "ka_additional": "ქვათაცვენა",
+                    "en_additional": "Rockfalls",
+                    "ka_driver": "საფრთხეები",
+                    "en_driver": "Hazard",
+                    "hex": "#addd8e"
+                },
+                                 {
+                    "id": 7,
+                    "ka_additional": "ქარიშხალი",
+                    "en_additional": "Wind",
+                    "ka_driver": "საფრთხეები",
+                    "en_driver": "Hazard",
+                    "hex": "#004529"
+                },
+                                 {
+                    "id": 8,
+                    "ka_additional": "წყალდიდობები",
+                    "en_additional": "Floods",
+                    "ka_driver": "საფრთხეები",
+                    "en_driver": "Hazard",
+                    "hex": "#6baed6"
+                },
+                                                 {
+                    "id": 9,
+                    "ka_additional": "მეწყერები",
+                    "en_additional": "Landslides",
+                    "ka_driver": "საფრთხეები",
+                    "en_driver": "Hazard",
+                    "hex": "#d0d1e6"
+                },
+                {
+                    "id": 10,
+                    "ka_additional": "ხანძრები",
+                    "en_additional": "Fires",
+                    "ka_driver": "საფრთხეები",
+                    "en_driver": "Hazard",
+                    "hex": "#fdae6b"
+                },
+                {
+                    "id": 11,
+                    "ka_additional": "სამთო მოპოვება და წარმოება",
+                    "en_additional": "Mining and industry",
+                    "ka_driver": "სამთო მოპოვება და წარმოება",
+                    "en_driver": "Mining and industry",
+                    "hex": "#bd0026"
+                },
+                {
+                    "id": 12,
+                    "ka_additional": "ურბანიზაცია",
+                    "en_additional": "Urban expansion",
+                    "ka_driver": "ურბანიზაცია",
+                    "en_driver": "Urban expansion",
+                    "hex": "#fa9fb5"
+                }
+            ],
+            "transform": [
+                {"type":"lookup",
+                "from":"histogram",
+                "key":"id",
+                "fields":["id"],
+                "values":["value"]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.value > 0"
+                },
+                {
+  "type": "stack",
+  "groupby": ["en_driver"],
+  "field": "value",
+  "sort": {"field": "en_additional", "order": "descending"}
+},
+{
+"type":"collect",
+"sort":{"field":"en_driver"}
+},
+{
+"type":"formula",
+"as":"driver",
+"expr":"if(language=='en',datum.en_driver,datum.ka_driver)"
+},
+{
+"type":"formula",
+"as":"additional",
+"expr":"if(language=='en',datum.en_additional,datum.ka_additional)"
+}
+
+                ]}
+    ],
+      "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "range": "width",
+      "paddingInner":0.1,
+      "domain": {"data": "lookup", "field": "driver"}
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "range": "height",
+      "nice": true, "zero": true,
+      "domain": {"data": "lookup", "field": "y1"}
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "lookup", "field": "additional"},
+      "range": {"data": "lookup", "field": "hex"}
+    }
+  ],
+
+  "axes": [
+    {
+    "title":{"signal":"xlabel"},
+    "orient": "bottom", 
+    "scale": "x", 
+    "zindex": 1,
+    "encode": {
+        "labels": {
+          "update": {
+    "angle":{"value": 45},
+    "baseline":{"value": "middle"},
+    "align":{"value":"left"},
+    "text": {
+              "signal": "truncate(datum.value, 15)"
+            }
+            }
+        }
+    }
+    },
+
+    {
+    "title":{"signal":"ylabel"},
+    "orient": "left", 
+    "scale": "y", 
+    "zindex": 1,
+    "tickCount": 5,
+    "grid":true,
+      "encode": {
+        "grid":{
+          "update": {
+      "gridOpacity":0.2,
+      "gridColor": "#6b6b6b"}
+      }
+      }
+    }
+  ],
+
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data": "lookup"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "x", "field": "driver"},
+          "width": {"scale": "x", "band": 1, "offset": -1},
+          "y": {"scale": "y", "field": "y0"},
+          "y2": {"scale": "y", "field": "y1"},
+          "fill": {"scale": "color", "field": "additional"},
+                  "tooltip": {"signal": "if(language == 'en', datum.value + ' ha lost due to ' + lower(datum.additional), datum.value + ' ჰა დაიკარგა შემდეგი მიზეზის გამო ' + datum.additional)"}
+        },
+        "update": {
+          "fillOpacity": {"value": 1}
+        },
+        "hover": {
+          "fillOpacity": {"value": 0.5}
+        }
+      }
+    }
+  ],
+      "legends": [
+        {
+            "titleBaseline": "top",
+            "fill": "color",
+            "orient": "bottom",
+            "columns": 2,
+            "columnPadding": 5,
+            "direction": "vertical",
+            "labelFontSize": 8
+        }
+    ]
+}
