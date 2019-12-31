@@ -1,0 +1,177 @@
+{
+	"schema": "https://vega.github.io/schema/vega/v4.0.json",
+	"width": 260,
+	"height": 260,
+	"padding": 5,
+	"signals": [{
+		"name": "language",
+		"value": "ka",
+		"bind": {
+			"input": "hidden",
+			"name": " ",
+			"options": [
+				"ka",
+				"en"
+			]
+		}
+	}],
+	"data": [{
+			"name": "histogram",
+			"format": {
+				"property": "histograms[0].counts"
+			},
+			"url": "https://production-api.globalforestwatch.org/v1/arcgis-proxy/ImageServer/computeHistograms?serverUrl=https://gis.mepa.gov.ge/server/&service=analysis/RiskRaster&pixelSize=30&renderingRule={\"rasterFunction\":\"Identity\",\"rasterFunctionArguments\":{\"Raster\":\"$10\"}}",
+			"transform": [{
+					"type": "formula",
+					"expr": "round(datum.data * 0.09)",
+					"as": "round"
+				},
+				{
+					"type": "identifier",
+					"as": "id"
+				}
+			]
+		},
+		{
+			"name": "table",
+			"values": [{
+					"id": "1",
+					"label": "No data",
+					"hex": "#eaeaea"
+				},
+				{
+					"id": "2",
+					"label": "0-3°",
+					"hex": "#709959"
+				},
+				{
+					"id": "3",
+					"label": "3-8°",
+					"hex": "#bbcc83"
+				},
+				{
+					"id": "4",
+					"label": "8-15°",
+					"hex": "#f2eaa0"
+				},
+				{
+					"id": "5",
+					"label": "15-25°",
+					"hex": "#f2d88f"
+				},
+				{
+					"id": "6",
+					"label": "25-35°",
+					"hex": "#e3b684"
+				},
+				{
+					"id": "7",
+					"label": "35-45°",
+					"hex": "#c7927d"
+				},
+				{
+					"id": "8",
+					"label": "45-65°",
+					"hex": "#e0b1b8"
+				},
+				{
+					"id": "9",
+					"label": ">65°",
+					"hex": "#fff2ff"
+				}
+			],
+			"transform": [{
+					"type": "lookup",
+					"from": "histogram",
+					"key": "id",
+					"fields": [
+						"id"
+					],
+					"values": [
+						"round"
+					],
+					"as": [
+						"value"
+					]
+				},
+				{
+					"type": "filter",
+					"expr": "datum.value > 0"
+				},
+				{
+					"type": "pie",
+					"field": "value"
+				}
+			]
+		}
+	],
+	"scales": [{
+		"name": "color",
+		"type": "ordinal",
+		"domain": {
+			"data": "table",
+			"field": "label"
+		},
+		"range": {
+			"data": "table",
+			"field": "hex"
+		}
+	}],
+	"marks": [{
+		"type": "arc",
+		"from": {
+			"data": "table"
+		},
+		"encode": {
+			"enter": {
+				"fill": {
+					"scale": "color",
+					"field": "label"
+				},
+				"x": {
+					"signal": "width / 2"
+				},
+				"stroke": {
+					"value": "white"
+				},
+				"strokewidth": {
+					"value": 0.5
+				},
+				"y": {
+					"signal": "height / 2"
+				},
+				"startAngle": {
+					"field": "startAngle"
+				},
+				"endAngle": {
+					"field": "endAngle"
+				},
+				"outerRadius": {
+					"signal": "height / 2"
+				},
+				"tooltip": {
+					"signal": "if(language=='ka',datum.label + ': ' + format(datum.value, ',.0f') + ' ჰა',datum.label + ': ' + format(datum.value, ',.0f') + ' ha')"
+				}
+			},
+			"hover": {
+				"fillOpacity": {
+					"value": 0.7
+				}
+			},
+			"update": {
+				"fillOpacity": {
+					"value": 1
+				}
+			}
+		}
+	}],
+	"legends": [{
+		"fill": "color",
+		"columns": 3,
+		"orient": "bottom",
+		"direction": "vertical",
+		"titleFontSize": 11,
+		"labelFontSize": 10,
+		"columnPadding": 15
+	}]
+}
