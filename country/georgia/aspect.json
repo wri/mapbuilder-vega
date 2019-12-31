@@ -1,0 +1,201 @@
+{
+    "schema": "https://vega.github.io/schema/vega/v4.0.json",
+    "width": 280,
+    "height": 280,
+    "padding": 5,
+    "signals": [
+    {
+      "name": "language",
+      "value": "ka",
+      "bind": {
+        "input": "hidden",
+        "name":" ",
+        "options": [
+          "ka",
+          "en"
+        ]
+      }
+    }
+    ],
+    
+    "data": [
+        {
+            "name": "histogram",
+            "format": {
+                "property": "histograms[0].counts"
+            },
+            "url": "https://production-api.globalforestwatch.org/v1/arcgis-proxy/ImageServer/computeHistograms?serverUrl=https://gis.mepa.gov.ge/server/&service=analysis/RiskRaster&pixelSize=30&renderingRule={\"rasterFunction\":\"Identity\",\"rasterFunctionArguments\":{\"Raster\":\"$8\"}}",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "round(datum.data * 0.09)",
+                    "as": "value"
+                },
+                {
+                    "type": "identifier",
+                    "as": "id"
+                }
+            ]
+        },
+        {
+            "name": "lookup",
+            "values": [
+                {
+                    "id": "1",
+                    "ka": "No data",
+                    "en": "No data",
+                    "hex": "#e1e1e1"
+                },
+                {
+                    "id": "2",
+                    "ka": "ბრტყელი",
+                    "en": "Flat",
+                    "hex": "#e1e1e1"
+                },
+                {
+                    "id": "3",
+                    "ka": "ჩრდილოეთი",
+                    "en": "North",
+                    "hex": "#8ddd77"
+                },
+                {
+                    "id": "4",
+                    "ka": "ჩრდილოეთ-აღმოსავლეთი",
+                    "en": "Northeast",
+                    "hex": "#bebada"
+                },
+                {
+                    "id": "5",
+                    "ka": "აღმოსავლეთი",
+                    "en": "East",
+                    "hex": "#fb8072"
+                },
+                {
+                    "id": "6",
+                    "ka": "სამხრეთ-აღმოსავლეთი",
+                    "en": "Southeast",
+                    "hex": "#80b1dd"
+                },
+                {
+                    "id": "7",
+                    "ka": "სამხრეთი",
+                    "en": "South",
+                    "hex": "#fccde5"
+                },
+                {
+                    "id": "8",
+                    "ka": "სამხრეთ-დასავლეთი",
+                    "en": "Southwest",
+                    "hex": "#b3de69"
+                },
+                {
+                    "id": "9",
+                    "ka": "დასავლეთი",
+                    "en": "West",
+                    "hex": "#fdb462"
+                },
+                {
+                    "id": "10",
+                    "ka": "ჩრდილოეთ-დასავლეთი",
+                    "en": "Northwest",
+                    "hex": "#bc80bd"
+                }
+            ]},
+{"name":"table",
+"source":"histogram",
+"transform": [
+                {
+                    "type": "lookup",
+                    "from": "lookup",
+                    "key": "id",
+                    "fields": [
+                        "id"
+                    ],
+                    "values": [
+                        {"signal":"language"},"hex"
+                    ],
+                    "as": [
+                        "label","hex"
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.value > 0"
+                },
+                {
+                    "type": "pie",
+                    "field": "value"
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "table",
+                "field": "label"
+            },
+            "range": {
+                "data": "table",
+                "field": "hex"
+            }
+        }
+    ],
+    "marks": [
+        {
+            "type": "arc",
+            "from": {
+                "data": "table"
+            },
+            "encode": {
+                "enter": {
+                    "fill": {
+                        "scale": "color",
+                        "field": "label"
+                    },
+                    "x": {"signal":"width / 2"},
+                    "stroke": {
+                        "value": "white"
+                    },
+                    "strokewidth": {
+                        "value": 0.5
+                    },
+                    "y": {"signal":"height / 2"},
+                    "startAngle": {
+                        "field": "startAngle"
+                    },
+                    "endAngle": {
+                        "field": "endAngle"
+                    },
+                    "outerRadius": {"signal":"height / 2"},
+                    "tooltip": {
+                        "signal": "if(language=='ka',datum.label + ': ' + format(datum.value, ',.0f') + ' ჰა',datum.label + ': ' + format(datum.value, ',.0f') + ' ha')"
+                    }
+                },
+                "hover": {
+                    "fillOpacity": {
+                        "value": 0.7
+                    }
+                },
+                "update": {
+                    "fillOpacity": {
+                        "value": 1
+                    }
+                }
+            }
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "columns": 2,
+            "orient": "bottom",
+            "direction": "vertical",
+            "titleFontSize": 12,
+            "labelFontSize": 10,
+            "columnPadding": 15
+        }
+    ]
+}
