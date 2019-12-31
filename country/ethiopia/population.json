@@ -1,0 +1,225 @@
+{
+    "schema": "https://vega.github.io/schema/vega/v4.0.json",
+    "width": 240,
+    "height": 180,
+    "padding": 5,
+    "autosize":"fit",
+    "data": [  {
+            "name": "histogram",
+            "format": {
+                "property": "histograms[0].counts"
+            },
+            "url": "https://production-api.globalforestwatch.org/v1/arcgis-proxy/ImageServer/computeHistograms?server=forest-atlas&service=eth/EthiopiaRestoration&pixelSize=30&renderingRule={\"rasterFunction\":\"Arithmetic\",\"rasterFunctionArguments\":{\"Raster\":\"$2\",\"Raster2\":\"$6\",\"Operation\":3}}",
+            "transform": [
+                {
+                    "type": "identifier",
+                    "as": "id"
+                },
+               
+                {
+                    "type": "formula",
+                    "as": "rounded",
+                    "expr": "floor(datum.data*0.09/100)*100"
+                }
+               
+            ]
+        },
+        {
+            "name": "table",
+            "values": [
+                            {
+                    "id": "1",
+                    "label": "No Data",
+                    "hex": "#000"
+                },
+                {
+                    "id": "2",
+                    "label": "≤ 20 people/sq. km",
+                    "hex": "#FFFF80"
+                },
+                {
+                    "id": "3",
+                    "label": "20 - 50 people/sq. km",
+                    "hex": "#FAD155"
+                },
+                {
+                    "id": "4",
+                    "label": "50 - 100 people/sq. km",
+                    "hex": "#F2A72E"
+                },
+                {
+                    "id": "5",
+                    "label": "100 - 200 people/sq. km",
+                    "hex": "#A14510"
+                },
+                {
+                    "id": "6",
+                    "label": "200 - 500 people/sq. km",
+                    "hex": "#6B0000"
+                },
+                {
+                    "id": "7",
+                    "label": "> 500 people/sq. km",
+                    "hex": "#320000"
+                }
+            ],
+            "transform": [ 
+                {
+                    "type": "lookup",
+                    "from": "histogram",
+                    "key": "id",
+                    "fields": [
+                        "id"
+                    ],
+                    "values": [
+                        "rounded"
+                    ],
+                    "as": [
+                        "value"
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.value > 0"
+                },
+                 {
+                    "type": "formula",
+                    "as": "group",
+                    "expr": "1"
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "group"
+                    ],
+                    "sort": {
+                        "field": "id"
+                    },
+                    "field": "value"
+                }]
+        }
+    ],
+    "scales": [
+        {
+            "name": "y",
+            "type": "band",
+            "range": "height",
+            "padding": 0.15,
+            "domain": {
+                "data": "table",
+                "field": "group"
+            }
+        },
+        {
+            "name": "x",
+            "type": "linear",
+            "range": "width",
+            "nice": true,
+            
+            "zero": true,
+            "domain": {
+                "data": "table",
+                "field": "y1"
+            }
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "table",
+                "field": "label"
+            },
+           "range":{"data": "table", "field": "hex"}
+            
+
+        },
+        {
+            "name": "colorStroke",
+            "type": "ordinal",
+            "domain": {
+                "data": "table",
+                "field": "label"
+            },
+            "range": [
+                "#FFF"
+            ]
+        }
+    ],
+    "axes": [
+        {
+            "orient": "bottom",
+            "scale": "x",
+            "format": "s",
+            "tickCount":5,
+            "labelFontSize": 12,
+            "title": "Hectares (k = 1,000; M = 1,000,000)",
+            "titleFontSize": 14,
+            "font": "Fira Sans"
+        }
+    ],
+    "marks": [
+        {
+            "name": "bars",
+            "type": "rect",
+            "from": {
+                "data": "table"
+            },
+            "encode": {
+                "enter": {
+                    "y": {
+                        "scale": "y",
+                        "field": "group"
+                    },
+                    "height": {
+                        "scale": "y",
+                        "band": 1,
+                        "offset": -5
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "y0"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "field": "y1"
+                    },
+                    "stroke": {
+                        "scale": "colorStroke",
+                        "field": "label"
+                    },
+                    "strokeWidth": {
+                        "value": 0.5
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "label"
+                    },
+                    "tooltip": {
+                        "signal": "datum.label + ': ' + format(datum.value, ',') + ' ha'"
+                    }
+                },
+                "update": {
+                    "fillOpacity": {
+                        "value": 1
+                    }
+                },
+                "hover": {
+                    "fillOpacity": {
+                        "value": 0.8
+                    }
+                }
+            }
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "orient": "bottom",
+            "titleFontSize": 14,
+            "labelFontSize": 12,
+            "font": "Fira Sans",
+            "titleLimit": 240,
+            "labelLimit":240
+        }
+    ]
+}
