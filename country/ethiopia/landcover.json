@@ -1,0 +1,283 @@
+{
+    "schema": "https://vega.github.io/schema/vega/v4.0.json",
+    "width": 240,
+    "height": 200,
+    "padding": 5,
+    "autosize":"fit",
+    "data": [  {
+            "name": "histogram",
+            "format": {
+                "property": "histograms[0].counts"
+            },
+            "url": "https://production-api.globalforestwatch.org/v1/arcgis-proxy/ImageServer/computeHistograms?server=forest-atlas&service=eth/EthiopiaRestoration&pixelSize=30&renderingRule={\"rasterFunction\":\"Arithmetic\",\"rasterFunctionArguments\":{\"Raster\":\"$1\",\"Raster2\":\"$6\",\"Operation\":3}}",
+            "transform": [
+                {
+                    "type": "identifier",
+                    "as": "id"
+                },
+               
+                {
+                    "type": "formula",
+                    "as": "rounded",
+                    "expr": "floor(datum.data*0.09/100)*100"
+                }
+               
+            ]
+        },
+        {
+            "name": "table",
+            "values": [
+                                         {
+                                "hex": "#000",
+                                "label": "No Data",
+                                "id": "1"
+                            },
+                            {
+                                "hex": "#009600",
+                                "label": "Dense forest",
+                                "id": "2"
+                            },
+                            {
+                                "hex": "#00AE00",
+                                "label": "Moderate forest",
+                                "id": "3"
+                            },
+                            {
+                                "hex": "#00DC00",
+                                "label": "Sparse forest",
+                                "id": "4"
+                            },
+                            {
+                                "hex": "#7C2800",
+                                "label": "Woodland",
+                                "id": "5"
+                            },
+                            {
+                                "hex": "#CDCD00",
+                                "label": "Closed grassland",
+                                "id": "6"
+                            },
+                            {
+                                "hex": "#FFFF00",
+                                "label": "Open grassland",
+                                "id": "7"
+                            },
+                            {
+                                "hex": "#A0522D",
+                                "label": "Closed shrubland",
+                                "id": "8"
+                            },
+                            {
+                                "hex": "#CD6839",
+                                "label": "Open shrubland",
+                                "id": "9"
+                            },
+                            {
+                                "hex": "#FF82FF",
+                                "label": "Perennial cropland",
+                                "id": "10"
+                            },
+                            {
+                                "hex": "#FF9BBE",
+                                "label": "Annual cropland",
+                                "id": "11"
+                            },
+                            {
+                                "hex": "#00EEEE",
+                                "label": "Wetland",
+                                "id": "12"
+                            },
+                            {
+                                "hex": "#0000FF",
+                                "label": "Water body",
+                                "id": "13"
+                            },
+                            {
+                                "hex": "#FF0000",
+                                "label": "Settlement",
+                                "id": "14"
+                            },
+                            {
+                                "hex": "#FFFFBC",
+                                "label": "Bare soil",
+                                "id": "15"
+                            },
+                            {
+                                "hex": "#FF8000",
+                                "label": "Rock outcrop",
+                                "id": "16"
+                            },
+                            {
+                                "hex": "#FFCB00",
+                                "label": "Lava flow",
+                                "id": "17"
+                            },
+                            {
+                                "hex": "#95C8A5",
+                                "label": "Salt pan",
+                                "id": "18"
+                            }
+            ],
+            "transform": [ 
+                {
+                    "type": "lookup",
+                    "from": "histogram",
+                    "key": "id",
+                    "fields": [
+                        "id"
+                    ],
+                    "values": [
+                        "rounded"
+                    ],
+                    "as": [
+                        "value"
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.value > 0"
+                },
+                 {
+                    "type": "formula",
+                    "as": "group",
+                    "expr": "1"
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "group"
+                    ],
+                    "sort": {
+                        "field": "id"
+                    },
+                    "field": "value"
+                }]
+        }
+    ],
+    "scales": [
+        {
+            "name": "y",
+            "type": "band",
+            "range": "height",
+            "padding": 0.15,
+            "domain": {
+                "data": "table",
+                "field": "group"
+            }
+        },
+        {
+            "name": "x",
+            "type": "linear",
+            "range": "width",
+            "nice": true,
+            
+            "zero": true,
+            "domain": {
+                "data": "table",
+                "field": "y1"
+            }
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "table",
+                "field": "label"
+            },
+           "range":{"data": "table", "field": "hex"}
+            
+
+        },
+        {
+            "name": "colorStroke",
+            "type": "ordinal",
+            "domain": {
+                "data": "table",
+                "field": "label"
+            },
+            "range": [
+                "#FFF"
+            ]
+        }
+    ],
+    "axes": [
+        {
+            "orient": "bottom",
+            "scale": "x",
+            "format": "s",
+            "tickCount":5,
+            "labelFontSize": 12,
+            "title": "Hectares (k = 1,000; M = 1,000,000)",
+            "titleFontSize": 14,
+            "font": "Fira Sans"
+        }
+    ],
+    "marks": [
+        {
+            "name": "bars",
+            "type": "rect",
+            "from": {
+                "data": "table"
+            },
+            "encode": {
+                "enter": {
+                    "y": {
+                        "scale": "y",
+                        "field": "group"
+                    },
+                    "height": {
+                        "scale": "y",
+                        "band": 1,
+                        "offset": -5
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "y0"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "field": "y1"
+                    },
+                    "stroke": {
+                        "scale": "colorStroke",
+                        "field": "label"
+                    },
+                    "strokeWidth": {
+                        "value": 0.5
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "label"
+                    },
+                    "tooltip": {
+                        "signal": "datum.label + ': ' + format(datum.value, ',') + ' ha'"
+                    }
+                },
+                "update": {
+                    "fillOpacity": {
+                        "value": 1
+                    }
+                },
+                "hover": {
+                    "fillOpacity": {
+                        "value": 0.8
+                    }
+                }
+            }
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "orient": "bottom",
+            "direction": "horizontal",
+            "titleFontSize": 14,
+            "labelFontSize": 10,
+            "font": "Fira Sans",
+            "titleLimit": 240,
+            "columns": 2,
+            "rowPadding": 2,
+            "columnPadding": 10
+        }
+    ]
+}
