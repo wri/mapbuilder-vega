@@ -1,0 +1,170 @@
+{
+        "schema": "https://vega.github.io/schema/vega/v4.0.json",
+        "width": 260,
+        "height": 260,
+        "padding": 5,
+          "signals": [
+    {
+      "name": "language",
+      "value": "en",
+      "bind": {
+        "input": "hidden",
+        "name":" ",
+        "options": [
+          "ka",
+          "en"
+        ]
+      }
+    }
+    ],
+        "data": [
+          {
+            "name": "histogram",
+            "format": {
+              "property": "histograms[0].counts"
+            },
+            "url": "https://production-api.globalforestwatch.org/v1/arcgis-proxy/ImageServer/computeHistograms?serverUrl=https://gis.mepa.gov.ge/server/&service=analysis/RiskRaster&pixelSize=30&renderingRule={\"rasterFunction\":\"Identity\",\"rasterFunctionArguments\":{\"Raster\":\"$1\"}}",
+            "transform": [
+              {
+                "type": "formula",
+                "expr": "round(datum.data * 0.09)",
+                "as": "value"
+              },
+              {
+                "type": "identifier",
+                "as": "id"
+              }
+            ]
+          },
+          {
+            "name": "lookup",
+            "values": [
+              {
+                "id": "1",
+                "ka": "No Data",
+                "en": "No Data",
+                "hex": "#000"
+              },
+              {
+                "id": "2",
+                "ka": "ძალიან დაბალი",
+                "en": "Very Low",
+                "hex": "#5B9740"
+              },
+              {
+                "id": "3",
+                "ka": "დაბალი",
+                "en": "Low",
+                "hex": "#7AEC40"
+              },
+              {
+                "id": "4",
+                "ka": "საშუალო",
+                "en": "Medium",
+                "hex": "#FFFF40"
+              },
+              {
+                "id": "5",
+                "ka": "მაღალი",
+                "en": "High",
+                "hex": "#FF4040"
+              }
+            ]},
+            {"name":"table",
+            "source":"histogram",
+            "transform":[
+              {
+                "type": "lookup",
+                "from": "lookup",
+                "key": "id",
+                "fields": [
+                  "id"
+                ],
+                "values": [
+                  {"signal":"language"},"hex"
+                ],
+                "as": [
+                  "label","hex"
+                ]
+              },
+              {
+                "type": "filter",
+                "expr": "datum.value > 0"
+              },
+              {
+                "type": "pie",
+                "field": "value"
+              }
+            ]
+          }
+        ],
+        "scales": [
+          {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+              "data": "table",
+              "field": "label"
+            },
+            "range": {
+              "data": "table",
+              "field": "hex"
+            }
+          }
+        ],
+        "marks": [
+          {
+            "type": "arc",
+            "from": {
+              "data": "table"
+            },
+            "encode": {
+              "enter": {
+                "fill": {
+                  "scale": "color",
+                  "field": "label"
+                },
+                "x": {"signal":"width / 2"},
+                "stroke": {
+                  "value": "white"
+                },
+                "strokewidth": {
+                  "value": 0.5
+                },
+                "y": {"signal":"height / 2"},
+                "startAngle": {
+                  "field": "startAngle"
+                },
+                "endAngle": {
+                  "field": "endAngle"
+                },
+                "outerRadius": {"signal":"height / 2"},
+                "tooltip": {
+                  "signal": "if(language == 'ka',datum.label + ' რისკი: ' + format(datum.value, ',.0f') + ' ჰა',datum.label + ' Risk: ' + format(datum.value, ',.0f') + ' ha')"
+                }
+              },
+              "hover": {
+                "fillOpacity": {
+                  "value": 0.7
+                }
+              },
+              "update": {
+                "fillOpacity": {
+                  "value": 1
+                }
+              }
+            }
+          }
+        ],
+        "legends": [
+          {
+            "fill": "color",
+            "columns": 2,
+            "orient": "bottom",
+            "direction": "vertical",
+            "titleFontSize": 11,
+            "labelFontSize": 13,
+            "columnPadding": 15
+          }
+        ]
+      }
