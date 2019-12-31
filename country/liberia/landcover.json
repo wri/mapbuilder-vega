@@ -1,0 +1,214 @@
+{
+        "legends": [
+          {
+            "columnPadding": 10,
+            "rowPadding": 2,
+            "columns": 2,
+            "titleLimit": 240,
+            "font": "Fira Sans",
+            "labelFontSize": 12,
+            "titleFontSize": 14,
+            "direction": "horizontal",
+            "orient": "bottom",
+            "fill": "color"
+          }
+        ],
+        "marks": [
+          {
+            "encode": {
+              "enter": {
+                "sort": true,
+                "cornerRadius": {
+                  "value": 0
+                },
+                "outerRadius": {
+                  "signal": "height / 2"
+                },
+                "innerRadius": {
+                  "value": 0
+                },
+                "padAngle": {
+                  "value": 0
+                },
+                "endAngle": {
+                  "field": "endAngle"
+                },
+                "startAngle": {
+                  "field": "startAngle"
+                },
+                "y": {
+                  "signal": "height / 2"
+                },
+                "x": {
+                  "signal": "width / 2"
+                },
+                "tooltip": {
+                  "signal": "datum.label + ': ' + format(datum.value, ',') + ' ha'"
+                },
+                "fill": {
+                  "field": "label",
+                  "scale": "color"
+                }
+              }
+            },
+            "from": {
+              "data": "table"
+            },
+            "type": "arc"
+          }
+        ],
+        "scales": [
+          {
+            "domain": {
+              "field": "group",
+              "data": "table"
+            },
+            "padding": 0.15,
+            "range": "height",
+            "type": "band",
+            "name": "y"
+          },
+          {
+            "domain": {
+              "field": "y1",
+              "data": "table"
+            },
+            "zero": true,
+            "nice": true,
+            "range": "width",
+            "type": "linear",
+            "name": "x"
+          },
+          {
+            "range": {
+              "field": "hex",
+              "data": "table"
+            },
+            "domain": {
+              "field": "label",
+              "data": "table"
+            },
+            "type": "ordinal",
+            "name": "color"
+          },
+          {
+            "range": [
+              "#FFF"
+            ],
+            "domain": {
+              "field": "label",
+              "data": "table"
+            },
+            "type": "ordinal",
+            "name": "colorStroke"
+          }
+        ],
+        "data": [
+          {
+            "transform": [
+              {
+                "as": "id",
+                "type": "identifier"
+              }
+            ],
+            "url": "https://production-api.globalforestwatch.org/v1/arcgis-proxy/ImageServer/computeHistograms?server=gfw&service=image_services/analysis&pixelSize=100&renderingRule={\"rasterFunction\":\"Identity\",\"rasterFunctionArguments\":{\"Raster\":\"$567\"},\"outputPixelType\":\"U8\" }",
+            "format": {
+              "property": "histograms[0].counts"
+            },
+            "name": "histogram"
+          },
+          {
+            "transform": [
+              {
+                "as": [
+                  "value"
+                ],
+                "values": [
+                  "data"
+                ],
+                "fields": [
+                  "id"
+                ],
+                "key": "id",
+                "from": "histogram",
+                "type": "lookup"
+              },
+              {
+                "expr": "datum.value > 0",
+                "type": "filter"
+              },
+              {
+                "field": "value",
+                "type": "pie"
+              }
+            ],
+            "values": [
+              {
+                "hex": "#000",
+                "label": "No Data",
+                "id": "1"
+              },
+              {
+                "hex": "#006100",
+                "label": "Forest > 80%",
+                "id": "2"
+              },
+              {
+                "hex": "#458A40",
+                "label": "Forest 30 - 80%",
+                "id": "3"
+              },
+              {
+                "hex": "#8FCC51",
+                "label": "Forest < 30%",
+                "id": "4"
+              },
+              {
+                "hex": "#8F73E8",
+                "label": "Mangrove Swamps",
+                "id": "5"
+              },
+              {
+                "hex": "#FF5454",
+                "label": "Settlements",
+                "id": "6"
+              },
+              {
+                "hex": "#82BDF8",
+                "label": "Surface Water Bodies",
+                "id": "7"
+              },
+              {
+                "hex": "#FAF887",
+                "label": "Grassland",
+                "id": "8"
+              },
+              {
+                "hex": "#FFC533",
+                "label": "Shrub",
+                "id": "9"
+              },
+              {
+                "hex": "#DEC7AB",
+                "label": "Bare Soil",
+                "id": "10"
+              },
+              {
+                "hex": "#A6A6A6",
+                "label": "Ecosystem Complex (rock/ sand)",
+                "id": "11"
+              },
+              {
+                "hex": "#4C4C4C",
+                "label": "Clouds",
+                "id": "12"
+              }
+            ],
+            "name": "table"
+          }
+        ],
+        "padding": 2,
+        "height": 290,
+        "width": 290,
+        "schema": "https://vega.github.io/schema/vega/v4.0.json"
+      }
