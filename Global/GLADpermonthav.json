@@ -40,7 +40,7 @@
             "format": {
               "property": "data.attributes.value"
             },
-            "url": "https://production-api.globalforestwatch.org/v1/glad-alerts?period=2016-01-01,2019-12-31&aggregate_values=true&aggregate_by=month",
+            "url": "https://production-api.globalforestwatch.org/v1/glad-alerts?period=2015-01-01,2020-12-31&aggregate_values=true&aggregate_by=month",
             "transform": [
               {
                 "type": "formula",
@@ -220,14 +220,14 @@
             "name": "lookup",
             "values": [
               {
-                "year": "2018",
+                "year": "2019",
                 "hex": "#838585",
-                "label": "2018"
+                "label": "2019"
               },
               {
-                "year": "2019",
+                "year": "2020",
                 "hex": "#FF70FA",
-                "label": "2019"
+                "label": "2020"
               }
             ]
           },
@@ -260,7 +260,7 @@
               },
               {
                 "type": "filter",
-                "expr": "datum.year > 2017"
+                "expr": "datum.year > 2018"
               }
             ]
           },
@@ -340,8 +340,8 @@
               {
                 "type": "fold",
                 "fields": [
-                  "2018",
                   "2019",
+                  "2020",
                   "average"
                 ]
               },
@@ -498,7 +498,7 @@
                       "field": "count"
                     },
                     "strokeWidth": {
-                      "signal": "if(datum.year == 2019, 1, 0.5)"
+                      "signal": "if(datum.year == 2020, 1, 0.5)"
                     },
                     "interpolate": {
                       "value": "linear"
@@ -533,7 +533,7 @@
                       "field": "year"
                     },
                     "size": {
-                      "signal": "if(datum.year == 2019, 20, 10)"
+                      "signal": "if(datum.year == 2020, 20, 10)"
                     },
                     "tooltip": [
                       {
