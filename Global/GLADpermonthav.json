@@ -270,7 +270,7 @@
             "transform": [
               {
                 "type": "filter",
-                "expr": "datum.year < 2019"
+                "expr": "datum.year < 2020"
               },
               {
                 "type": "lookup",
