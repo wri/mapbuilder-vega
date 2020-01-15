@@ -40,7 +40,7 @@
             "format": {
               "property": "data.attributes.value"
             },
-            "url": "https://production-api.globalforestwatch.org/v1/glad-alerts?period=2016-01-01,2019-12-31&aggregate_values=true&aggregate_by=month",
+            "url": "https://production-api.globalforestwatch.org/v1/glad-alerts?period=2016-01-01,2020-12-31&aggregate_values=true&aggregate_by=month",
             "transform": [
               {
                 "type": "formula",
@@ -219,21 +219,25 @@
           {
             "name": "lookup",
             "values": [
-              {
-                "hex": "#aaaaaa",
+            {
+                "hex": "#dbd7d7",
                 "year": "2016"
               },
               {
-                "hex": "#ffcae5",
+                "hex": "#aaaaaa",
                 "year": "2017"
               },
               {
-                "hex": "#ff77bc",
+                "hex": "#ffcae5",
                 "year": "2018"
               },
               {
-                "hex": "#ff0081",
+                "hex": "#ff77bc",
                 "year": "2019"
+              },
+              {
+                "hex": "#ff0081",
+                "year": "2020"
               }
             ]
           },
@@ -345,7 +349,7 @@
                       "field": "count"
                     },
                     "strokeWidth": {
-                      "signal": "if(datum.year == 2019, 1, 0.5)"
+                      "signal": "if(datum.year == 2020, 1, 0.5)"
                     },
                     "interpolate": {
                       "value": "linear"
@@ -380,7 +384,7 @@
                       "field": "year"
                     },
                     "size": {
-                      "signal": "if(datum.year == 2019, 20, 10)"
+                      "signal": "if(datum.year == 2020, 20, 10)"
                     },
                     "tooltip": [
 {
