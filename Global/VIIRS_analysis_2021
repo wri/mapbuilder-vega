@@ -1,0 +1,171 @@
+{
+"schema": "https://vega.github.io/schema/vega/v5.0.json",
+"width": 250,
+"height": 150,
+"padding": 5,
+"autosize":"fit",
+"background": "white",
+"signals": [
+    {
+      "name": "language",
+      "value": "en",
+      "bind": {
+        "input": "hidden",
+        "name":" ",
+        "options": [
+          "fr",
+          "ka",
+          "es",
+          "en",
+          "pt",
+          "zh",
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "fires",
+      "value": "Active Fires in",
+      "update":"if(language=='en','Active Fires in', if(language=='fr','Incendies actifs au ',if(language=='es','Incendios activos en',if(language=='pt','Incêndios ativos',if(language=='ka','ბოლო 7 დღეში.',if(language=='zh','的活跃火点','Kebakaran aktif'))))))"
+    },
+    {
+      "name": "days",
+      "value": "Past 7 Days",
+      "update": "if(language=='en','Past 7 Days', if(language=='fr','cours des 7 derniers jours',if(language=='es','los últimos siete días',if(language=='pt','nos últimos 7 dias',if(language=='ka','საერთო კარგვა',if(language=='zh','总减少量','dalam 7 hari terakhir'))))))"
+    }],
+"data": [
+{
+"name": "data",
+"format": {
+"property": "data"
+},
+"url": "https://data-api.globalforestwatch.org/dataset/nasa_viirs_fire_alerts/v202105.3/query/json?geostore_id=fd904bdadd7c2afffcefdc12c1a022b0&geostore_origin=rw&sql=select+sum%28alert__count%29+from+nasa_viirs_fire_alerts+where+alert__date+%3E%3D+%272021-01-01%27+and+alert__date%3C%3D+%272021-01-31%27"
+},
+{"name":"table",
+"source":"data",
+"transform":[{
+  "type":"project",
+  "fields":["sum"],
+  "as":["fire_count"]}
+]}],
+"marks": [
+{
+"type": "rect",
+"encode": {
+"enter": {
+"y": {
+"signal": "height/7"
+},
+"height": {
+"signal": "height/1.2"
+},
+"width": {
+"signal": "width/1.2"
+},
+"x": {
+"signal": "width/13"
+},
+"stroke": {
+"value": "#F0AB00"
+},
+"fill": {
+"value": "white"
+},
+"strokeWidth": {
+"value": 4
+}
+}
+}
+},
+{
+"type": "text",
+"from": {
+"data": "table"
+},
+"encode": {
+"enter": {
+"x": {
+"signal": "width/2"
+},
+"y": {
+"signal": "height/1.7"
+},
+"align": {
+"value": "center"
+},
+"baseline": {
+"value": "middle"
+},
+"text": {
+"signal": "fires"
+},
+"fontSize": {
+"value": 17
+}
+}
+}
+},
+{
+"type": "text",
+"from": {
+"data": "table"
+},
+"encode": {
+"enter": {
+"x": {
+"signal": "width/2"
+},
+"y": {
+"signal": "height/1.3"
+},
+"align": {
+"value": "center"
+},
+"baseline": {
+"value": "middle"
+},
+"text": {
+"signal": "days"
+},
+"fontSize": {
+"value": 17
+}
+}
+}
+},
+{
+"type": "text",
+"from": {
+"data": "table"
+},
+"encode": {
+"enter": {
+"x": {
+"signal": "width/2"
+},
+"y": {
+"signal": "height/2.7"
+},
+"align": {
+"value": "center"
+},
+"fontSize": {
+"value": 40
+},
+"fontWeight": {
+"value": "bold"
+},
+"baseline": {
+"value": "middle"
+},
+"text": {
+"field": "fire_count"
+},
+"fill": {
+"value": "#E94E02"
+}
+}
+}
+}
+]
+}
